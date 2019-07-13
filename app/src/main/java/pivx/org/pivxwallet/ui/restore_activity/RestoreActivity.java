@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import pivx.org.pivxwallet.R;
-import pivx.org.pivxwallet.module.PivxContext;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.ui.base.BaseActivity;
 import pivx.org.pivxwallet.ui.base.dialogs.DialogListener;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTextDialog;
@@ -114,7 +113,7 @@ public class RestoreActivity extends BaseActivity {
             @Override
             public View getDropDownView(int position, View row, ViewGroup parent) {
                 final File file = getItem(position);
-                final boolean isExternal = PivxContext.Files.EXTERNAL_WALLET_BACKUP_DIR.equals(file.getParentFile());
+                final boolean isExternal = N8VContext.Files.EXTERNAL_WALLET_BACKUP_DIR.equals(file.getParentFile());
                 final boolean isEncrypted = Crypto.OPENSSL_FILE_FILTER.accept(file);
 
                 if (row == null)
@@ -140,8 +139,8 @@ public class RestoreActivity extends BaseActivity {
             }
         };
         final String path;
-        final String backupPath = PivxContext.Files.EXTERNAL_WALLET_BACKUP_DIR.getAbsolutePath();
-        final String storagePath = PivxContext.Files.EXTERNAL_STORAGE_DIR.getAbsolutePath();
+        final String backupPath = N8VContext.Files.EXTERNAL_WALLET_BACKUP_DIR.getAbsolutePath();
+        final String storagePath = N8VContext.Files.EXTERNAL_STORAGE_DIR.getAbsolutePath();
         if (backupPath.startsWith(storagePath))
             path = backupPath.substring(storagePath.length());
         else
@@ -169,16 +168,16 @@ public class RestoreActivity extends BaseActivity {
                 @Override
                 public void run() {
                     try {
-                        org.pivxj.core.Context.propagate(PivxContext.CONTEXT);
+                        org.pivxj.core.Context.propagate(N8VContext.CONTEXT);
                         File file = (File) spinnerFiles.getSelectedItem();
                         if (WalletUtils.BACKUP_FILE_FILTER.accept(file)) {
-                            pivxModule.restoreWallet(file);
+                            n8VModule.restoreWallet(file);
                             showRestoreSucced();
                         } else if (KEYS_FILE_FILTER.accept(file)) {
                             //module.restorePrivateKeysFromBase58(file);
                         } else if (Crypto.OPENSSL_FILE_FILTER.accept(file)) {
                             try {
-                                pivxModule.restoreWalletFromEncrypted(file, password);
+                                n8VModule.restoreWalletFromEncrypted(file, password);
                                 showRestoreSucced();
                             } catch (final CantRestoreEncryptedWallet x) {
                                 runOnUiThread(new Runnable() {
@@ -266,7 +265,7 @@ public class RestoreActivity extends BaseActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            pivxApplication.startPivxService();
+                            n8VApplication.startPivxService();
                         }
                     }, TimeUnit.SECONDS.toMillis(5));
                 }
@@ -279,8 +278,8 @@ public class RestoreActivity extends BaseActivity {
         files.clear();
 
         // external storage
-        if (PivxContext.Files.EXTERNAL_WALLET_BACKUP_DIR.exists() && PivxContext.Files.EXTERNAL_WALLET_BACKUP_DIR.isDirectory()) {
-            File[] fileArray = PivxContext.Files.EXTERNAL_WALLET_BACKUP_DIR.listFiles();
+        if (N8VContext.Files.EXTERNAL_WALLET_BACKUP_DIR.exists() && N8VContext.Files.EXTERNAL_WALLET_BACKUP_DIR.isDirectory()) {
+            File[] fileArray = N8VContext.Files.EXTERNAL_WALLET_BACKUP_DIR.listFiles();
             if (fileArray!=null) {
                 for (final File file : fileArray)
                     if (Crypto.OPENSSL_FILE_FILTER.accept(file))
@@ -289,7 +288,7 @@ public class RestoreActivity extends BaseActivity {
         }
         // internal storage
         for (final String filename : fileList())
-            if (filename.startsWith(PivxContext.Files.WALLET_KEY_BACKUP_PROTOBUF + '.'))
+            if (filename.startsWith(N8VContext.Files.WALLET_KEY_BACKUP_PROTOBUF + '.'))
                 files.add(new File(getFilesDir(), filename));
 
         // sort
@@ -373,7 +372,7 @@ public class RestoreActivity extends BaseActivity {
             try {
                 if (file==null)return false;
                 reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charsets.UTF_8));
-                WalletUtils.readKeys(reader, PivxContext.NETWORK_PARAMETERS,PivxContext.BACKUP_MAX_CHARS);
+                WalletUtils.readKeys(reader, N8VContext.NETWORK_PARAMETERS, N8VContext.BACKUP_MAX_CHARS);
                 return true;
             } catch (final IOException x) {
                 return false;

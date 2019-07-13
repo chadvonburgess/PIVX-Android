@@ -9,9 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
-import pivx.org.pivxwallet.PivxApplication;
+import pivx.org.pivxwallet.N8VApplication;
 import pivx.org.pivxwallet.R;
-import global.PivxModule;
+import global.N8VModule;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTextDialog;
 import pivx.org.pivxwallet.utils.DialogsUtil;
 
@@ -24,8 +24,8 @@ import static pivx.org.pivxwallet.service.IntentsConstants.ACTION_TRUSTED_PEER_C
 
 public class PivxActivity extends AppCompatActivity {
 
-    protected PivxApplication pivxApplication;
-    protected PivxModule pivxModule;
+    protected N8VApplication n8VApplication;
+    protected N8VModule n8VModule;
 
     protected LocalBroadcastManager localBroadcastManager;
     private static final IntentFilter intentFilter = new IntentFilter(ACTION_TRUSTED_PEER_CONNECTION_FAIL);
@@ -50,8 +50,8 @@ public class PivxActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pivxApplication = PivxApplication.getInstance();
-        pivxModule = pivxApplication.getModule();
+        n8VApplication = N8VApplication.getInstance();
+        n8VModule = n8VApplication.getModule();
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
     }
 

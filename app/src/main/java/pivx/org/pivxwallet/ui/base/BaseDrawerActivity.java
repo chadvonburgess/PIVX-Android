@@ -27,7 +27,7 @@ import pivx.org.pivxwallet.ui.donate.DonateActivity;
 import pivx.org.pivxwallet.ui.settings_activity.SettingsActivity;
 import pivx.org.pivxwallet.ui.wallet_activity.WalletActivity;
 
-import static pivx.org.pivxwallet.module.PivxContext.OUT_OF_SYNC_TIME;
+import static pivx.org.pivxwallet.module.N8VContext.OUT_OF_SYNC_TIME;
 import static pivx.org.pivxwallet.service.IntentsConstants.ACTION_NOTIFICATION;
 import static pivx.org.pivxwallet.service.IntentsConstants.INTENT_BROADCAST_DATA_BLOCKCHAIN_STATE;
 import static pivx.org.pivxwallet.service.IntentsConstants.INTENT_BROADCAST_DATA_PEER_CONNECTED;
@@ -98,12 +98,12 @@ public class BaseDrawerActivity extends PivxActivity implements NavigationView.O
 
     private void checkState(){
         long now = System.currentTimeMillis();
-        long lastBlockTime = pivxApplication.getAppConf().getLastBestChainBlockTime();
+        long lastBlockTime = n8VApplication.getAppConf().getLastBestChainBlockTime();
         if (lastBlockTime+OUT_OF_SYNC_TIME>now){
             // check if i'm syncing or i'm synched
-            long peerHeight = pivxModule.getConnectedPeerHeight();
+            long peerHeight = n8VModule.getConnectedPeerHeight();
             if (peerHeight!=-1){
-                if (pivxModule.getChainHeight()+10>peerHeight) {
+                if (n8VModule.getChainHeight()+10>peerHeight) {
                     blockchainState = BlockchainState.SYNC;
                 }else {
                     blockchainState = BlockchainState.SYNCING;
@@ -112,10 +112,10 @@ public class BaseDrawerActivity extends PivxActivity implements NavigationView.O
                 blockchainState = BlockchainState.NOT_CONNECTION;
             }
         }else {
-            if (pivxModule.isAnyPeerConnected()) {
-                long peerHeight = pivxModule.getConnectedPeerHeight();
+            if (n8VModule.isAnyPeerConnected()) {
+                long peerHeight = n8VModule.getConnectedPeerHeight();
                 if (peerHeight!=-1){
-                    if (pivxModule.getChainHeight()+10>peerHeight) {
+                    if (n8VModule.getChainHeight()+10>peerHeight) {
                         blockchainState = BlockchainState.SYNC;
                     }else {
                         blockchainState = BlockchainState.SYNCING;
@@ -255,12 +255,12 @@ public class BaseDrawerActivity extends PivxActivity implements NavigationView.O
     }
 
     protected double calculateBlockchainSyncProgress() {
-        long nodeHeight = pivxModule.getConnectedPeerHeight();
+        long nodeHeight = n8VModule.getConnectedPeerHeight();
         if (nodeHeight>0){
             // calculate the progress
             // nodeHeight -> 100 %
             // current height -> x %
-            return (pivxModule.getChainHeight()*100) / nodeHeight;
+            return (n8VModule.getChainHeight()*100) / nodeHeight;
         }
         return -1;
     }

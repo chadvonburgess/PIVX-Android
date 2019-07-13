@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -25,7 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import global.PivtrumGlobalData;
 import pivtrum.PivtrumPeerData;
 import pivx.org.pivxwallet.R;
-import pivx.org.pivxwallet.module.PivxContext;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.ui.address_add_activity.AddContactActivity;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTextDialog;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTwoButtonsDialog;
@@ -114,7 +113,7 @@ public class DialogsUtil {
                     final String host = editHost.getText().toString();
                     final String tcpPortStr = editTcp.getText().toString();
                     final String sslPortStr = editSsl.getText().toString();
-                    int tcpPort = PivxContext.NETWORK_PARAMETERS.getPort();
+                    int tcpPort = N8VContext.NETWORK_PARAMETERS.getPort();
                     if (host.equals(PivtrumGlobalData.FURSZY_TESTNET_SERVER)){
                         tcpPort = 8443;
                     }

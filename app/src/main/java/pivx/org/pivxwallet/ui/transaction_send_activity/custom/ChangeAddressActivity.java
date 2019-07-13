@@ -154,7 +154,7 @@ public class ChangeAddressActivity extends BaseActivity {
                     String address = "";
                     address = data.getStringExtra(INTENT_EXTRA_RESULT);
                     String usedAddress;
-                    if (pivxModule.chechAddress(address)){
+                    if (n8VModule.chechAddress(address)){
                         usedAddress = address;
                     }else {
                         PivxURI pivxUri = new PivxURI(address);
@@ -171,7 +171,7 @@ public class ChangeAddressActivity extends BaseActivity {
 
     public String getAndCheckAddress() {
         String address = edit_address.getText().toString();
-        if (!pivxModule.chechAddress(address)){
+        if (!n8VModule.chechAddress(address)){
             throw new AddressFormatException();
         }
         return address;

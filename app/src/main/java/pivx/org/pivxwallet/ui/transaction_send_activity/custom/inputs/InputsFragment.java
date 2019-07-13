@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 import pivx.org.pivxwallet.R;
-import pivx.org.pivxwallet.module.PivxContext;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.ui.base.BaseRecyclerFragment;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerAdapter;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerViewHolder;
@@ -57,7 +57,7 @@ public class InputsFragment extends BaseRecyclerFragment<InputsFragment.InputSel
                 if (intent.hasExtra(INTENT_EXTRA_UNSPENT_WRAPPERS)) {
                     selectedList = (Set<InputWrapper>) intent.getSerializableExtra(INTENT_EXTRA_UNSPENT_WRAPPERS);
                     for (InputWrapper inputWrapper : selectedList) {
-                        inputWrapper.setUnspent(pivxModule.getUnspent(inputWrapper.getParentTxHash(), inputWrapper.getIndex()));
+                        inputWrapper.setUnspent(n8VModule.getUnspent(inputWrapper.getParentTxHash(), inputWrapper.getIndex()));
                     }
                 }
             }
@@ -125,7 +125,7 @@ public class InputsFragment extends BaseRecyclerFragment<InputsFragment.InputSel
                     )
         ));
 
-        for (InputWrapper inputWrapper : pivxModule.listUnspentWrappers()) {
+        for (InputWrapper inputWrapper : n8VModule.listUnspentWrappers()) {
             InputSelectionWrapper inputSelectionWrapper = new InputSelectionWrapper(inputWrapper);
             list.add(inputSelectionWrapper);
         }
@@ -179,7 +179,7 @@ public class InputsFragment extends BaseRecyclerFragment<InputsFragment.InputSel
 
                     data.setSelected(found);
 
-                    inputHolder.txt_address.setText(data.getInputWrapper().getLabel(PivxContext.NETWORK_PARAMETERS));
+                    inputHolder.txt_address.setText(data.getInputWrapper().getLabel(N8VContext.NETWORK_PARAMETERS));
                     inputHolder.txt_amount.setText(data.getInputWrapper().getUnspent().getValue().toFriendlyString());
                     inputHolder.txt_confirmations_amount.setText(data.getInputWrapper().getUnspent().getParentTransactionDepthInBlocks()+" "+getString(R.string.confimations));
                     inputHolder.txt_date.setText(simpleDateFormat.format(data.getInputWrapper().getUnspent().getParentTransaction().getUpdateTime()));

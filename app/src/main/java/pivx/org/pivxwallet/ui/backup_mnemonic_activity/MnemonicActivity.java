@@ -3,7 +3,6 @@ package pivx.org.pivxwallet.ui.backup_mnemonic_activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
 
-import java.util.Arrays;
 import java.util.List;
 
 import pivx.org.pivxwallet.R;
@@ -61,7 +59,7 @@ public class MnemonicActivity extends BaseActivity {
             });
         }
 
-        List<String> textArray = pivxModule.getMnemonic();
+        List<String> textArray = n8VModule.getMnemonic();
 
         txt_words = (FlexboxLayout) findViewById(R.id.securityWords);
 

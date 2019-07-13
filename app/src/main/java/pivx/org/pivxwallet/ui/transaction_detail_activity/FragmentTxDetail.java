@@ -72,10 +72,10 @@ public class FragmentTxDetail extends BaseFragment implements View.OnClickListen
         if (intent!=null){
             transactionWrapper = (TransactionWrapper) intent.getSerializableExtra(TX_WRAPPER);
             if (intent.hasExtra(IS_DETAIL)){
-                transactionWrapper.setTransaction(pivxModule.getTx(transactionWrapper.getTxId()));
+                transactionWrapper.setTransaction(n8VModule.getTx(transactionWrapper.getTxId()));
                 isTxDetail = true;
             }else {
-                transactionWrapper.setTransaction(new Transaction(pivxModule.getConf().getNetworkParams(),intent.getByteArrayExtra(TX)));
+                transactionWrapper.setTransaction(new Transaction(n8VModule.getConf().getNetworkParams(),intent.getByteArrayExtra(TX)));
                 if (intent.hasExtra(TX_MEMO)){
                     transactionWrapper.getTransaction().setMemo(intent.getStringExtra(TX_MEMO));
                 }
@@ -130,7 +130,7 @@ public class FragmentTxDetail extends BaseFragment implements View.OnClickListen
                 Coin inputsSum = Coin.ZERO;
                 for (TransactionInput input : transactionWrapper.getTransaction().getInputs()) {
                     TransactionOutPoint unspent = input.getOutpoint();
-                    inputsSum = inputsSum.plus(pivxModule.getUnspentValue(unspent.getHash(), (int) unspent.getIndex()));
+                    inputsSum = inputsSum.plus(n8VModule.getUnspentValue(unspent.getHash(), (int) unspent.getIndex()));
                 }
                 fee = inputsSum.subtract(transactionWrapper.getTransaction().getOutputSum());
             }catch (Exception e){
@@ -166,14 +166,14 @@ public class FragmentTxDetail extends BaseFragment implements View.OnClickListen
                         label = addressLabel.getName();
                     } else
                         //label = addressLabel.getAddresses().get(0);
-                        label = transactionOutput.getScriptPubKey().getToAddress(pivxModule.getConf().getNetworkParams(),true).toBase58();
+                        label = transactionOutput.getScriptPubKey().getToAddress(n8VModule.getConf().getNetworkParams(),true).toBase58();
                 }else {
-                    label = transactionOutput.getScriptPubKey().getToAddress(pivxModule.getConf().getNetworkParams(),true).toBase58();
+                    label = transactionOutput.getScriptPubKey().getToAddress(n8VModule.getConf().getNetworkParams(),true).toBase58();
                 }
             }else {
                 Script script = transactionOutput.getScriptPubKey();
                 if (script.isPayToScriptHash() || script.isSentToRawPubKey() || script.isSentToAddress()) {
-                    label = script.getToAddress(pivxModule.getConf().getNetworkParams(), true).toBase58();
+                    label = script.getToAddress(n8VModule.getConf().getNetworkParams(), true).toBase58();
                 }else {
                     label = script.toString();
                 }
@@ -203,7 +203,7 @@ public class FragmentTxDetail extends BaseFragment implements View.OnClickListen
 
             @Override
             public void onLongItemClickListener(OutputUtil data, int position) {
-                if (pivxModule.chechAddress(data.getLabel())) {
+                if (n8VModule.chechAddress(data.getLabel())) {
                     DialogsUtil.showCreateAddressLabelDialog(getActivity(),data.getLabel());
                 }
             }
@@ -236,7 +236,7 @@ public class FragmentTxDetail extends BaseFragment implements View.OnClickListen
                 Intent intent = new Intent(getActivity(), InputsDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean(INTENT_NO_TOTAL_AMOUNT, true);
-                bundle.putSerializable(INTENT_EXTRA_UNSPENT_WRAPPERS, (Serializable) pivxModule.convertFrom(transactionWrapper.getTransaction().getInputs()));
+                bundle.putSerializable(INTENT_EXTRA_UNSPENT_WRAPPERS, (Serializable) n8VModule.convertFrom(transactionWrapper.getTransaction().getInputs()));
                 intent.putExtras(bundle);
                 startActivity(intent);
             } catch (TxNotFoundException e) {

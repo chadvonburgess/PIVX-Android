@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import global.PivtrumGlobalData;
-import pivtrum.PivtrumPeer;
 import pivtrum.PivtrumPeerData;
 import pivx.org.pivxwallet.R;
 import pivx.org.pivxwallet.ui.base.BaseActivity;
@@ -84,13 +83,13 @@ public class StartNodeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // Check this..
-                pivxApplication.setTrustedServer(null);
-                pivxApplication.stopBlockchain();
+                n8VApplication.setTrustedServer(null);
+                n8VApplication.stopBlockchain();
                 // now that everything is good, start the service
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        pivxApplication.startPivxService();
+                        n8VApplication.startPivxService();
                     }
                 }, TimeUnit.SECONDS.toMillis(5));
                 goNext();
@@ -105,16 +104,16 @@ public class StartNodeActivity extends BaseActivity {
             public void onClick(View v) {
                 int selected = dropdown.getSelectedItemPosition();
                 PivtrumPeerData selectedNode = trustedNodes.get(selected);
-                boolean isStarted = pivxApplication.getAppConf().getTrustedNode()!=null;
-                pivxApplication.setTrustedServer(selectedNode);
+                boolean isStarted = n8VApplication.getAppConf().getTrustedNode()!=null;
+                n8VApplication.setTrustedServer(selectedNode);
 
                 if (isStarted){
-                    pivxApplication.stopBlockchain();
+                    n8VApplication.stopBlockchain();
                     // now that everything is good, start the service
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            pivxApplication.startPivxService();
+                            n8VApplication.startPivxService();
                         }
                     }, TimeUnit.SECONDS.toMillis(5));
                 }
@@ -126,7 +125,7 @@ public class StartNodeActivity extends BaseActivity {
         dropdown = (Spinner)findViewById(R.id.spinner);
 
         // add connected node if it's not on the list
-        PivtrumPeerData pivtrumPeer = pivxApplication.getAppConf().getTrustedNode();
+        PivtrumPeerData pivtrumPeer = n8VApplication.getAppConf().getTrustedNode();
         if (pivtrumPeer!=null && !trustedNodes.contains(pivtrumPeer)){
             trustedNodes.add(pivtrumPeer);
         }
@@ -167,7 +166,7 @@ public class StartNodeActivity extends BaseActivity {
 
     private void goNext() {
         Class clazz = null;
-        if (pivxApplication.getAppConf().getPincode()==null){
+        if (n8VApplication.getAppConf().getPincode()==null){
             clazz = PincodeActivity.class;
         }else {
             clazz = WalletActivity.class;

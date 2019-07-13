@@ -31,7 +31,7 @@ public class StartActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // Open Create Wallet
-                pivxModule.createWallet();
+                n8VModule.createWallet();
                 Intent myIntent = new Intent(v.getContext(), TutorialActivity.class);
                 startActivity(myIntent);
                 finish();

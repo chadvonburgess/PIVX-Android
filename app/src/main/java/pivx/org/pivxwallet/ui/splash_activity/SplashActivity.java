@@ -1,13 +1,12 @@
 package pivx.org.pivxwallet.ui.splash_activity;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.VideoView;
 
-import pivx.org.pivxwallet.PivxApplication;
+import pivx.org.pivxwallet.N8VApplication;
 import pivx.org.pivxwallet.R;
 import pivx.org.pivxwallet.ui.start_activity.StartActivity;
 import pivx.org.pivxwallet.ui.wallet_activity.WalletActivity;
@@ -19,55 +18,21 @@ import pivx.org.pivxwallet.ui.wallet_activity.WalletActivity;
 public class SplashActivity extends AppCompatActivity {
     VideoView videoView;
     private boolean ispaused = false;
-
+    CountDownTimer timer = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
-
-        videoView = (VideoView) findViewById(R.id.video_view);
-        Uri video;
-        if(PivxApplication.getInstance().getAppConf().isSplashSoundEnabled())
-            video = Uri.parse("android.resource://" + getPackageName() + "/"
-                + R.raw.splash_video);
-        else {
-            //video = Uri.parse("android.resource://" + getPackageName() + "/"
-            //        + R.raw.splash_video_muted);
-            Intent intent = new Intent(this, WalletActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
-
-        if (videoView != null) {
-            videoView.setVideoURI(video);
-            videoView.setZOrderOnTop(true);
-            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                public void onCompletion(MediaPlayer mp) {
-                    jump();
-                }
-            });
-
-            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                    jump();
-                    return true;
-                }
-            });
-
-            videoView.start();
-
-        }else{
-            jump();
-        }
+        timer = new TimerCountDownTimer(5000,5000);
+        timer.start();
+        jump();
     }
 
 
     private void jump() {
 
-        if (PivxApplication.getInstance().getAppConf().isAppInit()){
+        if (N8VApplication.getInstance().getAppConf().isAppInit()){
             Intent intent = new Intent(this, WalletActivity.class);
             startActivity(intent);
         }else {
@@ -90,6 +55,39 @@ public class SplashActivity extends AppCompatActivity {
         if (ispaused) {
             jump();
         }
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    private class TimerCountDownTimer extends CountDownTimer {
+
+
+        /**
+         * @param millisInFuture    The number of millis in the future from the call
+         *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
+         *                          is called.
+         * @param countDownInterval The interval along the way to receive
+         *                          {@link #onTick(long)} callbacks.
+         */
+        public TimerCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            jump();
+        }
     }
 }
+

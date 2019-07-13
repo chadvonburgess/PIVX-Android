@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 
 import pivtrum.PivtrumPeerData;
 
-import static pivx.org.pivxwallet.module.PivxContext.DEFAULT_RATE_COIN;
+import static pivx.org.pivxwallet.module.N8VContext.DEFAULT_RATE_COIN;
 
 /**
  * Created by furszy on 6/8/17.

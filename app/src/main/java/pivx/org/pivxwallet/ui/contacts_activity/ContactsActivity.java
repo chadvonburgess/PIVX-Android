@@ -90,7 +90,7 @@ public class ContactsActivity extends BaseDrawerActivity implements ListItemList
         executor.submit(new Runnable() {
             @Override
             public void run() {
-                addressLabels = pivxModule.getContacts();
+                addressLabels = n8VModule.getContacts();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -138,7 +138,7 @@ public class ContactsActivity extends BaseDrawerActivity implements ListItemList
         SimpleTwoButtonsDialog.SimpleTwoBtnsDialogListener listener = new SimpleTwoButtonsDialog.SimpleTwoBtnsDialogListener() {
             @Override
             public void onRightBtnClicked(SimpleTwoButtonsDialog dialog) {
-                pivxModule.deleteAddressLabel(data);
+                n8VModule.deleteAddressLabel(data);
                 load();
                 Toast.makeText(ContactsActivity.this,R.string.address_label_deleted,Toast.LENGTH_LONG).show();
                 dialog.dismiss();

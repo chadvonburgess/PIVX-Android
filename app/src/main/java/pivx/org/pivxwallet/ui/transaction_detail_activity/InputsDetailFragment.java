@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import pivx.org.pivxwallet.R;
-import pivx.org.pivxwallet.module.PivxContext;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.ui.base.BaseRecyclerFragment;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerAdapter;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerViewHolder;
@@ -42,7 +42,7 @@ public class InputsDetailFragment extends BaseRecyclerFragment<InputWrapper> {
                 if (intent.hasExtra(INTENT_EXTRA_UNSPENT_WRAPPERS)) {
                     list = (Set<InputWrapper>) intent.getSerializableExtra(INTENT_EXTRA_UNSPENT_WRAPPERS);
                     for (InputWrapper inputWrapper : list) {
-                        inputWrapper.setUnspent(pivxModule.getUnspent(inputWrapper.getParentTxHash(), inputWrapper.getIndex()));
+                        inputWrapper.setUnspent(n8VModule.getUnspent(inputWrapper.getParentTxHash(), inputWrapper.getIndex()));
                     }
                 }
             }
@@ -78,7 +78,7 @@ public class InputsDetailFragment extends BaseRecyclerFragment<InputWrapper> {
             @Override
             protected void bindHolder(final FragmentTxDetail.DetailOutputHolder holder, final InputWrapper data, int position) {
                 holder.txt_num.setText("Position "+position);
-                holder.txt_address.setText(data.getLabel(PivxContext.NETWORK_PARAMETERS));
+                holder.txt_address.setText(data.getLabel(N8VContext.NETWORK_PARAMETERS));
                 holder.txt_value.setText(data.getUnspent().getValue().toFriendlyString());
             }
         };

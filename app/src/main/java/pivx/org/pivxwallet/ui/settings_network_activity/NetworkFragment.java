@@ -30,7 +30,7 @@ public class NetworkFragment extends BaseRecyclerFragment<Peer> {
 
     @Override
     protected List<Peer> onLoading() {
-        return pivxModule.listConnectedPeers();
+        return n8VModule.listConnectedPeers();
     }
 
     @Override

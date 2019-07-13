@@ -70,7 +70,7 @@ public class UpgradeWalletActivity extends BaseActivity {
         root.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!pivxModule.isAnyPeerConnected()){
+                if (!n8VModule.isAnyPeerConnected()){
                     if (noConnectionDialog==null)
                         noConnectionDialog = DialogsUtil.buildSimpleTextDialog(
                                 UpgradeWalletActivity.this,
@@ -90,7 +90,7 @@ public class UpgradeWalletActivity extends BaseActivity {
                             boolean succed = false;
                             String message = null;
                             try {
-                                succed = pivxModule.upgradeWallet(upgradeCode);
+                                succed = n8VModule.upgradeWallet(upgradeCode);
                                 Log.i("UpgradeWallet", "wallet upgrade result: " + succed);
                             } catch (UpgradeException e) {
                                 e.printStackTrace();
@@ -105,7 +105,7 @@ public class UpgradeWalletActivity extends BaseActivity {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                pivxApplication.startPivxService();
+                                                n8VApplication.startPivxService();
                                             }
                                         }, TimeUnit.SECONDS.toMillis(3));
                                         Toast.makeText(UpgradeWalletActivity.this,

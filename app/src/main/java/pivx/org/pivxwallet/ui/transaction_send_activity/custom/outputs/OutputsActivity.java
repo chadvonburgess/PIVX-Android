@@ -127,7 +127,7 @@ public class OutputsActivity extends BaseActivity {
                         outputWrapper.getAddressLabel()
                 );
                 addressLabel.addAddress(outputWrapper.getAddress());
-                pivxModule.saveContactIfNotExist(
+                n8VModule.saveContactIfNotExist(
                         addressLabel
                 );
             }

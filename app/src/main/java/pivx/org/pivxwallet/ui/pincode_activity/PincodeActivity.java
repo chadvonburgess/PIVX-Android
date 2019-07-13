@@ -44,7 +44,7 @@ public class PincodeActivity extends BaseActivity implements KeyboardFragment.on
             checkPin = true;
         }
 
-        if (pivxApplication.getAppConf().getPincode()!=null && !checkPin){
+        if (n8VApplication.getAppConf().getPincode()!=null && !checkPin){
             goNext();
             finish();
         }
@@ -64,15 +64,15 @@ public class PincodeActivity extends BaseActivity implements KeyboardFragment.on
     }
 
     private void goNext() {
-        if (pivxApplication.getAppConf().getTrustedNode()==null){
+        if (n8VApplication.getAppConf().getTrustedNode()==null){
             // select random trusted node
             List<PivtrumPeerData> nodes = PivtrumGlobalData.listTrustedHosts();
             Random random = new Random();
-            pivxApplication.setTrustedServer(nodes.get(random.nextInt(nodes.size())));
-            pivxApplication.stopBlockchain();
+            n8VApplication.setTrustedServer(nodes.get(random.nextInt(nodes.size())));
+            n8VApplication.stopBlockchain();
         }
 
-        pivxApplication.getAppConf().setAppInit(true);
+        n8VApplication.getAppConf().setAppInit(true);
 
         Intent myIntent = new Intent(PincodeActivity.this,MnemonicActivity.class);
         myIntent.putExtra(INTENT_EXTRA_INIT_VIEW,true);
@@ -92,12 +92,12 @@ public class PincodeActivity extends BaseActivity implements KeyboardFragment.on
                     String pincode = String.valueOf(pin[0]) + String.valueOf(pin[1]) + String.valueOf(pin[2]) + String.valueOf(pin[3]);
 
                     if (!checkPin) {
-                        pivxApplication.getAppConf().savePincode(pincode);
+                        n8VApplication.getAppConf().savePincode(pincode);
                         Toast.makeText(this, R.string.pincode_saved, Toast.LENGTH_SHORT).show();
                         goNext();
                     }else {
                         // check pin and return result
-                        if(pivxApplication.getAppConf().getPincode().equals(pincode)){
+                        if(n8VApplication.getAppConf().getPincode().equals(pincode)){
                             Intent intent = new Intent();
                             setResult(Activity.RESULT_OK, intent);
                             finish();
@@ -122,7 +122,7 @@ public class PincodeActivity extends BaseActivity implements KeyboardFragment.on
     public void onBackPressed() {
         super.onBackPressed();
         // todo: controlar esto
-        if (pivxApplication.getAppConf().getPincode()==null){
+        if (n8VApplication.getAppConf().getPincode()==null){
             startActivity(new Intent(this, StartActivity.class));
             finish();
         }

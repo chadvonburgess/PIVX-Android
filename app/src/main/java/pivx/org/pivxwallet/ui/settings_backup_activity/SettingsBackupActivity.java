@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 
 import pivx.org.pivxwallet.R;
-import pivx.org.pivxwallet.module.PivxContext;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.module.wallet.WalletBackupHelper;
 import pivx.org.pivxwallet.ui.backup_mnemonic_activity.MnemonicActivity;
 import pivx.org.pivxwallet.ui.base.BaseActivity;
@@ -66,7 +66,7 @@ public class SettingsBackupActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                org.pivxj.core.Context.propagate(PivxContext.CONTEXT);
+                org.pivxj.core.Context.propagate(N8VContext.CONTEXT);
                 backup();
                 runOnUiThread(new Runnable() {
                     @Override
@@ -90,7 +90,7 @@ public class SettingsBackupActivity extends BaseActivity {
 
         switch (item.getItemId()) {
             case 0:
-                if (pivxModule.isWalletWatchOnly()){
+                if (n8VModule.isWalletWatchOnly()){
                     Toast.makeText(this,R.string.error_watch_only_mode,Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -113,10 +113,10 @@ public class SettingsBackupActivity extends BaseActivity {
                 return;
             }
             File backupFile = new WalletBackupHelper().determineBackupFile(null);
-            boolean result = pivxModule.backupWallet(backupFile, firstPassword);
+            boolean result = n8VModule.backupWallet(backupFile, firstPassword);
 
             if (result){
-                pivxApplication.getAppConf().setHasBackup(true);
+                n8VApplication.getAppConf().setHasBackup(true);
                 showSuccedBackupDialog(backupFile.getAbsolutePath());
             }else {
                 backupRes = R.string.backup_fail;

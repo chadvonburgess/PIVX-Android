@@ -38,9 +38,9 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
-import global.PivxModuleImp;
-import pivx.org.pivxwallet.PivxApplication;
-import pivx.org.pivxwallet.module.PivxContext;
+import global.N8VModuleImp;
+import pivx.org.pivxwallet.N8VApplication;
+import pivx.org.pivxwallet.module.N8VContext;
 
 
 public class CrashReporter {
@@ -228,14 +228,14 @@ public class CrashReporter {
 					p.lastUpdateTime));
 	}
 
-	public static void appendApplicationInfo(final Appendable report, final PivxApplication application) throws IOException {
+	public static void appendApplicationInfo(final Appendable report, final N8VApplication application) throws IOException {
 
 		final PackageInfo pi = (PackageInfo) application.getPackageInfo();
 		final Calendar calendar = new GregorianCalendar(UTC);
 
 		report.append("Version: " + pi.versionName + " (" + pi.versionCode + ")\n");
 		report.append("Package: " + pi.packageName + "\n");
-		report.append("Test/Prod: " + (PivxContext.IS_TEST ? "test" : "prod") + "\n");
+		report.append("Test/Prod: " + (N8VContext.IS_TEST ? "test" : "prod") + "\n");
 		report.append("Timezone: " + TimeZone.getDefault().getID() + "\n");
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		report.append("Time: " + String.format(Locale.US, "%tF %tT %tZ", calendar, calendar, calendar) + "\n");
@@ -250,8 +250,8 @@ public class CrashReporter {
 		calendar.setTimeInMillis(lastBackupTime);
 		report.append(
 				"Time of backup: " + (lastBackupTime > 0 ? String.format(Locale.US, "%tF %tT %tZ", calendar, calendar, calendar) : "none") + "\n");
-		report.append("Network: " + PivxContext.NETWORK_PARAMETERS.getId() + "\n");
-		final Wallet wallet = ((PivxModuleImp)application.getModule()).getWallet();
+		report.append("Network: " + N8VContext.NETWORK_PARAMETERS.getId() + "\n");
+		final Wallet wallet = ((N8VModuleImp)application.getModule()).getWallet();
 		report.append("Encrypted: " + wallet.isEncrypted() + "\n");
 		report.append("Keychain size: " + wallet.getKeyChainGroupSize() + "\n");
 

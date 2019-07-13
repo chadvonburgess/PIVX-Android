@@ -2,14 +2,11 @@ package pivx.org.pivxwallet.ui.words_restore_activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,18 +27,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import pivx.org.pivxwallet.R;
-import pivx.org.pivxwallet.module.PivxContext;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.ui.base.BaseActivity;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTwoButtonsDialog;
-import pivx.org.pivxwallet.ui.transaction_send_activity.MyFilterableAdapter;
-import pivx.org.pivxwallet.ui.transaction_send_activity.MyTextWatcher;
 import pivx.org.pivxwallet.ui.tutorial_activity.TutorialActivity;
 import pivx.org.pivxwallet.ui.wallet_activity.WalletActivity;
 import pivx.org.pivxwallet.utils.AnimationUtils;
 import pivx.org.pivxwallet.utils.CrashReporter;
 import pivx.org.pivxwallet.utils.DialogsUtil;
 
-import static pivx.org.pivxwallet.module.PivxContext.PIVX_WALLET_APP_RELEASED_ON_PLAY_STORE_TIME;
+import static pivx.org.pivxwallet.module.N8VContext.N8V_WALLET_APP_RELEASED_ON_PLAY_STORE_TIME;
 
 /**
  * Created by Neoperol on 7/19/17.
@@ -98,7 +92,7 @@ public class RestoreWordsActivity extends BaseActivity {
         viewPager.setOffscreenPageLimit(3);
 
         //Words
-        mnemonicWords = pivxModule.getAvailableMnemonicWordsList();
+        mnemonicWords = n8VModule.getAvailableMnemonicWordsList();
         mnemonicAdapter =  new ArrayAdapter<String>
                 (this, android.R.layout.select_dialog_item, mnemonicWords);
     }
@@ -215,17 +209,17 @@ public class RestoreWordsActivity extends BaseActivity {
                                         boolean result = false;
                                         try {
                                             // loading here..
-                                            pivxModule.checkMnemonic(mnemonic);
+                                            n8VModule.checkMnemonic(mnemonic);
 
                                             boolean isBip32 = check_bip32.isChecked();
 
-                                            pivxModule.restoreWallet(mnemonic, PIVX_WALLET_APP_RELEASED_ON_PLAY_STORE_TIME,!isBip32);
+                                            n8VModule.restoreWallet(mnemonic, N8V_WALLET_APP_RELEASED_ON_PLAY_STORE_TIME,!isBip32);
 
                                             message = getString(R.string.restore_mnemonic);
                                             result = true;
                                         } catch (IOException e) {
                                             e.printStackTrace();
-                                            CrashReporter.saveBackgroundTrace(e, pivxApplication.getPackageInfo());
+                                            CrashReporter.saveBackgroundTrace(e, n8VApplication.getPackageInfo());
                                             // todo: show an error message here..
                                             message = e.getMessage();
                                         }catch (MnemonicException e){
@@ -233,7 +227,7 @@ public class RestoreWordsActivity extends BaseActivity {
                                             message = getString(R.string.invalid_mnemonic_code);
                                         }catch (Exception e){
                                             e.printStackTrace();
-                                            CrashReporter.saveBackgroundTrace(e,pivxApplication.getPackageInfo());
+                                            CrashReporter.saveBackgroundTrace(e, n8VApplication.getPackageInfo());
                                             // todo: show an error message here..
                                             message = e.getMessage();
                                         }
@@ -245,10 +239,10 @@ public class RestoreWordsActivity extends BaseActivity {
                                                 if (finalResult){
                                                     Toast.makeText(RestoreWordsActivity.this, finalMessage, Toast.LENGTH_LONG).show();
                                                     // Check if the pin has been set
-                                                    if (pivxApplication.getAppConf().getPincode() != null){
+                                                    if (n8VApplication.getAppConf().getPincode() != null){
                                                         // Check if the app is starting
-                                                        if(!pivxApplication.getAppConf().isAppInit()){
-                                                            pivxApplication.getAppConf().setAppInit(true);
+                                                        if(!n8VApplication.getAppConf().isAppInit()){
+                                                            n8VApplication.getAppConf().setAppInit(true);
                                                         }
                                                         startActivity(new Intent(RestoreWordsActivity.this, WalletActivity.class));
                                                     }else {
@@ -381,7 +375,7 @@ public class RestoreWordsActivity extends BaseActivity {
                 init(txtWord17,txtWord18,txtWord19,txtWord20,txtWord21,txtWord22,txtWord23,txtWord24);
                 txt_bip32_message = (TextView) root.findViewById(R.id.txt_bip32_message);
                 check_bip32 = (CheckBox) root.findViewById(R.id.check_bip32);
-                txt_bip32_message.setText(getString(R.string.restore_bip32_warning, PivxContext.ENABLE_BIP44_APP_VERSION));
+                txt_bip32_message.setText(getString(R.string.restore_bip32_warning, N8VContext.ENABLE_BIP44_APP_VERSION));
 
             }
 

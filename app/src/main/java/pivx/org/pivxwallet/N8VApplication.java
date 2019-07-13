@@ -32,18 +32,18 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
 import global.ContextWrapper;
+import global.N8VModule;
 import global.WalletConfiguration;
 import global.utils.Io;
 import pivtrum.NetworkConf;
 import pivtrum.PivtrumPeerData;
 import pivx.org.pivxwallet.contacts.ContactsStore;
-import pivx.org.pivxwallet.module.PivxContext;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.module.wallet.WalletBackupHelper;
-import global.PivxModule;
-import global.PivxModuleImp;
+import global.N8VModuleImp;
 import pivx.org.pivxwallet.module.WalletConfImp;
 import pivx.org.pivxwallet.rate.db.RateDb;
-import pivx.org.pivxwallet.service.PivxWalletService;
+import pivx.org.pivxwallet.service.N8VWalletService;
 import pivx.org.pivxwallet.utils.AppConf;
 import pivx.org.pivxwallet.utils.CentralFormats;
 import pivx.org.pivxwallet.utils.CrashReporter;
@@ -55,19 +55,19 @@ import static pivx.org.pivxwallet.utils.AndroidUtils.shareText;
  * Created by mati on 18/04/17.
  */
 @ReportsCrashes(
-        mailTo = PivxContext.REPORT_EMAIL, // my email here
+        mailTo = N8VContext.REPORT_EMAIL, // my email here
         mode = ReportingInteractionMode.TOAST,
         resToastText = R.string.crash_toast_text)
-public class PivxApplication extends Application implements ContextWrapper {
+public class N8VApplication extends Application implements ContextWrapper {
 
     private static Logger log;
 
     /** Singleton */
-    private static PivxApplication instance;
+    private static N8VApplication instance;
     public static final long TIME_CREATE_APPLICATION = System.currentTimeMillis();
     private long lastTimeRequestBackup;
 
-    private PivxModule pivxModule;
+    private N8VModule n8vModule;
     private AppConf appConf;
     private NetworkConf networkConf;
 
@@ -76,7 +76,7 @@ public class PivxApplication extends Application implements ContextWrapper {
     private ActivityManager activityManager;
     private PackageInfo info;
 
-    public static PivxApplication getInstance() {
+    public static N8VApplication getInstance() {
         return instance;
     }
 
@@ -115,7 +115,7 @@ public class PivxApplication extends Application implements ContextWrapper {
             } catch (final IOException x) {
                 log.info("problem writing attachment", x);
             }
-            shareText(PivxApplication.this,"Pivx wallet crash", "Unexpected crash", attachments);
+            shareText(N8VApplication.this,"Pivx wallet crash", "Unexpected crash", attachments);
         }
     };
 
@@ -125,7 +125,7 @@ public class PivxApplication extends Application implements ContextWrapper {
         instance = this;
         try {
             initLogging();
-            log = LoggerFactory.getLogger(PivxApplication.class);
+            log = LoggerFactory.getLogger(N8VApplication.class);
             PackageManager manager = getPackageManager();
             info = manager.getPackageInfo(this.getPackageName(), 0);
             activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -147,8 +147,8 @@ public class PivxApplication extends Application implements ContextWrapper {
             //walletConfiguration.saveTrustedNode(HardcodedConstants.TESTNET_HOST,0);
             //AddressStore addressStore = new SnappyStore(getDirPrivateMode("address_store").getAbsolutePath());
             ContactsStore contactsStore = new ContactsStore(this);
-            pivxModule = new PivxModuleImp(this, walletConfiguration,contactsStore,new RateDb(this),new WalletBackupHelper());
-            pivxModule.start();
+            n8vModule = new N8VModuleImp(this, walletConfiguration,contactsStore,new RateDb(this),new WalletBackupHelper());
+            n8vModule.start();
 
         } catch (Exception e){
             e.printStackTrace();
@@ -156,7 +156,7 @@ public class PivxApplication extends Application implements ContextWrapper {
     }
 
     public void startPivxService() {
-        Intent intent = new Intent(this,PivxWalletService.class);
+        Intent intent = new Intent(this,N8VWalletService.class);
         startService(intent);
     }
 
@@ -207,8 +207,8 @@ public class PivxApplication extends Application implements ContextWrapper {
         log.setLevel(Level.INFO);
     }
 
-    public PivxModule getModule(){
-        return pivxModule;
+    public N8VModule getModule(){
+        return n8vModule;
     }
 
     public AppConf getAppConf(){
@@ -233,7 +233,7 @@ public class PivxApplication extends Application implements ContextWrapper {
     @Override
     public boolean isMemoryLow() {
         final int memoryClass = activityManager.getMemoryClass();
-        return memoryClass<=pivxModule.getConf().getMinMemoryNeeded();
+        return memoryClass<= n8vModule.getConf().getMinMemoryNeeded();
     }
 
     @Override
@@ -243,7 +243,7 @@ public class PivxApplication extends Application implements ContextWrapper {
 
     @Override
     public void stopBlockchain() {
-        Intent intent = new Intent(this,PivxWalletService.class);
+        Intent intent = new Intent(this,N8VWalletService.class);
         intent.setAction(ACTION_RESET_BLOCKCHAIN);
         startService(intent);
     }
@@ -258,7 +258,7 @@ public class PivxApplication extends Application implements ContextWrapper {
      */
     public void setTrustedServer(PivtrumPeerData trustedServer) {
         networkConf.setTrustedServer(trustedServer);
-        pivxModule.getConf().saveTrustedNode(trustedServer.getHost(),0);
+        n8vModule.getConf().saveTrustedNode(trustedServer.getHost(),0);
         appConf.saveTrustedNode(trustedServer);
     }
 

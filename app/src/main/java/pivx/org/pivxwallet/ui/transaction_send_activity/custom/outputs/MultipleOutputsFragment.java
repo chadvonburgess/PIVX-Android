@@ -117,7 +117,7 @@ public class MultipleOutputsFragment extends BaseRecyclerFragment<OutputWrapper>
                 });
                 if (data.getAddress()!=null){
                     holder.edit_address.setText(data.getAddress());
-                    if (!pivxModule.chechAddress(data.getAddress())) {
+                    if (!n8VModule.chechAddress(data.getAddress())) {
                         holder.edit_address.setTextColor(Color.RED);
                     } else {
                         holder.edit_address.setTextColor(Color.parseColor("#4F4F4F"));
@@ -151,12 +151,12 @@ public class MultipleOutputsFragment extends BaseRecyclerFragment<OutputWrapper>
                         if (s.length()>0){
                             if (holder.edit_address!=null) {
                                 String address = s.toString();
-                                if (!pivxModule.chechAddress(address)) {
+                                if (!n8VModule.chechAddress(address)) {
                                     holder.edit_address.setTextColor(Color.RED);
                                 } else {
                                     holder.edit_address.setTextColor(Color.parseColor("#4F4F4F"));
                                     // check if there is a label for this address
-                                    AddressLabel addressLabel = pivxModule.getAddressLabel(address);
+                                    AddressLabel addressLabel = n8VModule.getAddressLabel(address);
                                     if (addressLabel!=null){
                                         holder.edit_address_label.setText(addressLabel.getName());
                                     }
@@ -256,7 +256,7 @@ public class MultipleOutputsFragment extends BaseRecyclerFragment<OutputWrapper>
         Coin amount = Coin.parseCoin(amountStr);
         String addressLabel = outputWrapper.getAddressLabel();
 
-        if (address==null || !pivxModule.chechAddress(address)){
+        if (address==null || !n8VModule.chechAddress(address)){
             // todo: mejorar esto
             Toast.makeText(getActivity(),R.string.invalid_input_address,Toast.LENGTH_LONG).show();
             return;
@@ -278,7 +278,7 @@ public class MultipleOutputsFragment extends BaseRecyclerFragment<OutputWrapper>
                     String address = "";
                     address = data.getStringExtra(INTENT_EXTRA_RESULT);
                     String usedAddress;
-                    if (pivxModule.chechAddress(address)){
+                    if (n8VModule.chechAddress(address)){
                         usedAddress = address;
                     }else {
                         PivxURI pivxUri = new PivxURI(address);
@@ -317,7 +317,7 @@ public class MultipleOutputsFragment extends BaseRecyclerFragment<OutputWrapper>
                 firstCheckAmount = true;
             }else
                 amountStr = outputWrapperList.getAmount().toPlainString();
-            boolean checkAddress = address==null || !pivxModule.chechAddress(address);
+            boolean checkAddress = address==null || !n8VModule.chechAddress(address);
             boolean checkAmount = firstCheckAmount || amountStr==null || amountStr.length() == 0;
             if (i!=list.size()-1) {
                 if (checkAddress)

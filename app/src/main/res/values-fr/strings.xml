@@ -87,7 +87,7 @@
     <string name="unavailable">Solde non dépensable:</string>
     <string name="sending_tx">Envoi de la transaction..</string>
     <string name="title_fee">Frais</string>
-    <string name="title_pivx_send">Montant envoyé</string>
+    <string name="title_n8v_send">Montant envoyé</string>
     <string name="empty_message_address">Vous n\'avez aucune adresse sauvegardé pour l\'instant.</string>
     <string name="error_message">On dirait qu\'il y a une erreur\n avec votre transaction</string>
     <string name="settings_reset_blockchain">Réinitialiser la blockchain</string>

@@ -26,9 +26,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 
-import global.PivxModuleImp;
+import global.N8VModuleImp;
 import global.utils.Io;
-import pivx.org.pivxwallet.PivxApplication;
+import pivx.org.pivxwallet.N8VApplication;
 import pivx.org.pivxwallet.R;
 import pivx.org.pivxwallet.utils.CrashReporter;
 
@@ -54,11 +54,11 @@ public class CrashPopupActivity extends AppCompatActivity implements View.OnClic
     private TextView txt_send;
     private TextView txt_cancel;
 
-    private PivxApplication pivxApplication;
+    private N8VApplication n8VApplication;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        pivxApplication = PivxApplication.getInstance();
+        n8VApplication = N8VApplication.getInstance();
         setTheme(R.style.AppTheme_Dialog);
         setContentView(R.layout.report_issue_activity_dialog);
         this.setFinishOnTouchOutside(false);
@@ -76,7 +76,7 @@ public class CrashPopupActivity extends AppCompatActivity implements View.OnClic
         txt_send.setOnClickListener(this);
         txt_cancel.setOnClickListener(this);
 
-        pivxApplication.getAppConf().saveShowReportScreenOnStart(false);
+        n8VApplication.getAppConf().saveShowReportScreenOnStart(false);
 
         super.onCreate(savedInstanceState);
     }
@@ -225,13 +225,13 @@ public class CrashPopupActivity extends AppCompatActivity implements View.OnClic
     }
 
     protected CharSequence subject(){
-        return "Crash report"+" "+ pivxApplication.getVersionName();
+        return "Crash report"+" "+ n8VApplication.getVersionName();
     }
 
     @Nullable
     protected CharSequence collectApplicationInfo() throws IOException{
         final StringBuilder applicationInfo = new StringBuilder();
-        CrashReporter.appendApplicationInfo(applicationInfo, pivxApplication);
+        CrashReporter.appendApplicationInfo(applicationInfo, n8VApplication);
         return applicationInfo;
     }
 
@@ -249,6 +249,6 @@ public class CrashPopupActivity extends AppCompatActivity implements View.OnClic
 
     @Nullable
     protected CharSequence collectWalletDump() throws IOException{
-        return ((PivxModuleImp)pivxApplication.getModule()).getWallet().toString(false,true,true,null);
+        return ((N8VModuleImp) n8VApplication.getModule()).getWallet().toString(false,true,true,null);
     }
 }

@@ -8,14 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import java.math.BigDecimal;
 
 import pivx.org.pivxwallet.contacts.AbstractSqliteDb;
-import global.PivxRate;
+import global.N8VRate;
 import global.store.RateDbDao;
 
 /**
  * Created by furszy on 7/5/17.
  */
 
-public class RateDb extends AbstractSqliteDb<PivxRate> implements RateDbDao<PivxRate> {
+public class RateDb extends AbstractSqliteDb<N8VRate> implements RateDbDao<N8VRate> {
 
 
     private static final String DATABASE_NAME = "Rates";
@@ -66,7 +66,7 @@ public class RateDb extends AbstractSqliteDb<PivxRate> implements RateDbDao<Pivx
     }
 
     @Override
-    protected ContentValues buildContent(PivxRate obj) {
+    protected ContentValues buildContent(N8VRate obj) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_COIN,obj.getCode());
         contentValues.put(KEY_VALUE,obj.getRate().toEngineeringString());
@@ -76,23 +76,23 @@ public class RateDb extends AbstractSqliteDb<PivxRate> implements RateDbDao<Pivx
     }
 
     @Override
-    protected PivxRate buildFrom(Cursor cursor) {
+    protected N8VRate buildFrom(Cursor cursor) {
         String coin = cursor.getString(KEY_POS_COIN);
         BigDecimal value = new BigDecimal(cursor.getString(KEY_POS_VALUE));
         long timestap = cursor.getLong(KEY_POS_TIMESTAMP);
-        return new PivxRate(coin,value,timestap);
+        return new N8VRate(coin,value,timestap);
     }
 
-    public PivxRate getRate(String coin){
+    public N8VRate getRate(String coin){
         return get(KEY_COIN,coin);
     }
 
 
-    public void insertOrUpdateIfExist(PivxRate pivxRate) {
-        if (getRate(pivxRate.getCode())==null){
-            insert(pivxRate);
+    public void insertOrUpdateIfExist(N8VRate n8VRate) {
+        if (getRate(n8VRate.getCode())==null){
+            insert(n8VRate);
         }else {
-            updateByKey(KEY_COIN,pivxRate.getCode(),pivxRate);
+            updateByKey(KEY_COIN, n8VRate.getCode(), n8VRate);
         }
     }
 }

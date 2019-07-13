@@ -22,9 +22,9 @@ import com.google.zxing.WriterException;
 import org.pivxj.core.Address;
 import org.pivxj.uri.PivxURI;
 
-import pivx.org.pivxwallet.PivxApplication;
+import global.N8VModule;
+import pivx.org.pivxwallet.N8VApplication;
 import pivx.org.pivxwallet.R;
-import global.PivxModule;
 
 import static android.graphics.Color.WHITE;
 import static pivx.org.pivxwallet.utils.AndroidUtils.copyToClipboard;
@@ -36,7 +36,7 @@ import static pivx.org.pivxwallet.utils.QrUtils.encodeAsBitmap;
 
 public class MyAddressFragment extends Fragment implements View.OnClickListener {
 
-    private PivxModule module;
+    private N8VModule module;
 
     private View root;
     private TextView txt_address;
@@ -46,16 +46,16 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener 
 
     private Address address;
 
-    public static MyAddressFragment newInstance(PivxModule pivxModule) {
+    public static MyAddressFragment newInstance(N8VModule n8VModule) {
         MyAddressFragment f = new MyAddressFragment();
-        f.setModule(pivxModule);
+        f.setModule(n8VModule);
         return f;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        module = PivxApplication.getInstance().getModule();
+        module = N8VApplication.getInstance().getModule();
         root = inflater.inflate(R.layout.my_address,null);
         txt_address = (TextView) root.findViewById(R.id.txt_address);
         btn_share = (Button) root.findViewById(R.id.btn_share);
@@ -91,7 +91,7 @@ public class MyAddressFragment extends Fragment implements View.OnClickListener 
         }
 
     }
-    public void setModule(PivxModule module) {
+    public void setModule(N8VModule module) {
         this.module = module;
     }
 

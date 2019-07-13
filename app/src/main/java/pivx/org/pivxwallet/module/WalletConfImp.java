@@ -8,14 +8,14 @@ import org.pivxj.core.NetworkParameters;
 import global.WalletConfiguration;
 import pivx.org.pivxwallet.utils.Configurations;
 
-import static pivx.org.pivxwallet.module.PivxContext.CONTEXT;
-import static pivx.org.pivxwallet.module.PivxContext.Files.BLOCKCHAIN_FILENAME;
-import static pivx.org.pivxwallet.module.PivxContext.Files.CHECKPOINTS_FILENAME;
-import static pivx.org.pivxwallet.module.PivxContext.Files.WALLET_FILENAME_PROTOBUF;
-import static pivx.org.pivxwallet.module.PivxContext.Files.WALLET_KEY_BACKUP_PROTOBUF;
-import static pivx.org.pivxwallet.module.PivxContext.NETWORK_PARAMETERS;
-import static pivx.org.pivxwallet.module.PivxContext.PEER_DISCOVERY_TIMEOUT_MS;
-import static pivx.org.pivxwallet.module.PivxContext.PEER_TIMEOUT_MS;
+import static pivx.org.pivxwallet.module.N8VContext.CONTEXT;
+import static pivx.org.pivxwallet.module.N8VContext.Files.BLOCKCHAIN_FILENAME;
+import static pivx.org.pivxwallet.module.N8VContext.Files.CHECKPOINTS_FILENAME;
+import static pivx.org.pivxwallet.module.N8VContext.Files.WALLET_FILENAME_PROTOBUF;
+import static pivx.org.pivxwallet.module.N8VContext.Files.WALLET_KEY_BACKUP_PROTOBUF;
+import static pivx.org.pivxwallet.module.N8VContext.NETWORK_PARAMETERS;
+import static pivx.org.pivxwallet.module.N8VContext.PEER_DISCOVERY_TIMEOUT_MS;
+import static pivx.org.pivxwallet.module.N8VContext.PEER_TIMEOUT_MS;
 
 /**
  * Created by furszy on 6/4/17.
@@ -54,12 +54,12 @@ public class WalletConfImp extends Configurations implements WalletConfiguration
 
     @Override
     public int getTrustedNodePort() {
-        return PivxContext.NETWORK_PARAMETERS.getPort();
+        return N8VContext.NETWORK_PARAMETERS.getPort();
     }
 
     @Override
     public String getMnemonicFilename() {
-        return PivxContext.Files.BIP39_WORDLIST_FILENAME;
+        return N8VContext.Files.BIP39_WORDLIST_FILENAME;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class WalletConfImp extends Configurations implements WalletConfiguration
 
     @Override
     public NetworkParameters getNetworkParams() {
-        return PivxContext.NETWORK_PARAMETERS;
+        return N8VContext.NETWORK_PARAMETERS;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class WalletConfImp extends Configurations implements WalletConfiguration
 
     @Override
     public long getWalletAutosaveDelayMs() {
-        return PivxContext.Files.WALLET_AUTOSAVE_DELAY_MS;
+        return N8VContext.Files.WALLET_AUTOSAVE_DELAY_MS;
     }
 
     @Override
@@ -109,17 +109,17 @@ public class WalletConfImp extends Configurations implements WalletConfiguration
 
     @Override
     public int getMinMemoryNeeded() {
-        return PivxContext.MEMORY_CLASS_LOWEND;
+        return N8VContext.MEMORY_CLASS_LOWEND;
     }
 
     @Override
     public long getBackupMaxChars() {
-        return PivxContext.BACKUP_MAX_CHARS;
+        return N8VContext.BACKUP_MAX_CHARS;
     }
 
     @Override
     public boolean isTest() {
-        return PivxContext.IS_TEST;
+        return N8VContext.IS_TEST;
     }
 
     @Override

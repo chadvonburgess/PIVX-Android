@@ -1,5 +1,6 @@
 package pivx.org.pivxwallet.service;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -47,19 +48,19 @@ import chain.BlockchainManager;
 import chain.BlockchainState;
 import chain.Impediment;
 import pivtrum.listeners.AddressListener;
-import pivx.org.pivxwallet.PivxApplication;
+import pivx.org.pivxwallet.N8VApplication;
 import pivx.org.pivxwallet.R;
-import pivx.org.pivxwallet.module.PivxContext;
-import global.PivxModuleImp;
+import pivx.org.pivxwallet.module.N8VContext;
+import global.N8VModuleImp;
 import pivx.org.pivxwallet.module.store.SnappyBlockchainStore;
 import pivx.org.pivxwallet.rate.CoinMarketCapApiClient;
-import pivx.org.pivxwallet.rate.RequestPivxRateException;
-import global.PivxRate;
+import pivx.org.pivxwallet.rate.RequestN8VRateException;
+import global.N8VRate;
 import pivx.org.pivxwallet.ui.wallet_activity.WalletActivity;
 import pivx.org.pivxwallet.utils.AppConf;
 import pivx.org.pivxwallet.utils.CrashReporter;
 
-import static pivx.org.pivxwallet.module.PivxContext.CONTEXT;
+import static pivx.org.pivxwallet.module.N8VContext.CONTEXT;
 import static pivx.org.pivxwallet.service.IntentsConstants.ACTION_ADDRESS_BALANCE_CHANGE;
 import static pivx.org.pivxwallet.service.IntentsConstants.ACTION_BROADCAST_TRANSACTION;
 import static pivx.org.pivxwallet.service.IntentsConstants.ACTION_CANCEL_COINS_RECEIVED;
@@ -79,12 +80,12 @@ import static pivx.org.pivxwallet.service.IntentsConstants.NOT_COINS_RECEIVED;
  * Created by furszy on 6/12/17.
  */
 
-public class PivxWalletService extends Service{
+public class N8VWalletService extends Service{
 
-    private Logger log = LoggerFactory.getLogger(PivxWalletService.class);
+    private Logger log = LoggerFactory.getLogger(N8VWalletService.class);
 
-    private PivxApplication pivxApplication;
-    private PivxModuleImp module;
+    private N8VApplication n8VApplication;
+    private N8VModuleImp module;
     //private PivtrumPeergroup pivtrumPeergroup;
     private BlockchainManager blockchainManager;
 
@@ -108,16 +109,16 @@ public class PivxWalletService extends Service{
     private volatile long lastUpdateTime = System.currentTimeMillis();
     private volatile long lastMessageTime = System.currentTimeMillis();
 
-    public class PivxBinder extends Binder {
-        public PivxWalletService getService() {
-            return PivxWalletService.this;
+    public class N8VBinder extends Binder {
+        public N8VWalletService getService() {
+            return N8VWalletService.this;
         }
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return new PivxBinder();
+        return new N8VBinder();
     }
 
     private AddressListener addressListener = new AddressListener() {
@@ -155,7 +156,7 @@ public class PivxWalletService extends Service{
             log.info("Peer: " + peer + ", Block: " + block + ", left: " + blocksLeft);*/
 
 
-            /*if (PivxContext.IS_TEST)
+            /*if (N8VContext.IS_TEST)
                 showBlockchainSyncNotification(blocksLeft);*/
 
                 //delayHandler.removeCallbacksAndMessages(null);
@@ -168,12 +169,12 @@ public class PivxWalletService extends Service{
                     } else {
                         blockchainState = BlockchainState.SYNCING;
                     }
-                    pivxApplication.getAppConf().setLastBestChainBlockTime(block.getTime().getTime());
+                    n8VApplication.getAppConf().setLastBestChainBlockTime(block.getTime().getTime());
                     broadcastBlockchainState(true);
                 }
             }catch (Exception e){
                 e.printStackTrace();
-                CrashReporter.saveBackgroundTrace(e,pivxApplication.getPackageInfo());
+                CrashReporter.saveBackgroundTrace(e, n8VApplication.getPackageInfo());
             }
         }
     };
@@ -188,7 +189,8 @@ public class PivxWalletService extends Service{
 
         @Override
         public void run() {
-            org.pivxj.core.Context.propagate(PivxContext.CONTEXT);
+            //todo going to need to change this
+            org.pivxj.core.Context.propagate(N8VContext.CONTEXT);
             lastMessageTime = System.currentTimeMillis();
             broadcastBlockchainState(false);
         }
@@ -232,6 +234,7 @@ public class PivxWalletService extends Service{
         PendingIntent deleteIntent;
         PendingIntent openPendingIntent;
 
+        @SuppressLint("NewApi")
         @Override
         public void onCoinsReceived(Wallet wallet, Transaction transaction, Coin coin, Coin coin1) {
             //todo: acá falta una validación para saber si la transaccion es mia.
@@ -258,11 +261,11 @@ public class PivxWalletService extends Service{
                     notificationAccumulatedAmount = notificationAccumulatedAmount.add(amount);
                     Intent openIntent = new Intent(getApplicationContext(), WalletActivity.class);
                     openPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, openIntent, 0);
-                    Intent resultIntent = new Intent(getApplicationContext(), PivxWalletService.this.getClass());
+                    Intent resultIntent = new Intent(getApplicationContext(), N8VWalletService.this.getClass());
                     resultIntent.setAction(ACTION_CANCEL_COINS_RECEIVED);
-                    deleteIntent = PendingIntent.getService(PivxWalletService.this, 0, resultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    deleteIntent = PendingIntent.getService(N8VWalletService.this, 0, resultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                     mBuilder = new NotificationCompat.Builder(getApplicationContext())
-                            .setContentTitle("Pivs received!")
+                            .setContentTitle("N8Vs received!")
                             .setContentText("Coins received for a value of " + notificationAccumulatedAmount.toFriendlyString())
                             .setAutoCancel(true)
                             .setSmallIcon(R.mipmap.ic_launcher)
@@ -270,7 +273,7 @@ public class PivxWalletService extends Service{
                                     (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ?
                                             getResources().getColor(R.color.bgPurple, null)
                                             :
-                                            ContextCompat.getColor(PivxWalletService.this, R.color.bgPurple))
+                                            ContextCompat.getColor(N8VWalletService.this, R.color.bgPurple))
                             .setDeleteIntent(deleteIntent)
                             .setContentIntent(openPendingIntent);
                     nm.notify(NOT_COINS_RECEIVED, mBuilder.build());
@@ -313,19 +316,19 @@ public class PivxWalletService extends Service{
         serviceCreatedAt = System.currentTimeMillis();
         super.onCreate();
         try {
-            log.info("Pivx service started");
+            log.info("N8V service started");
             // Android stuff
             final String lockName = getPackageName() + " blockchain sync";
             final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
             wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, lockName);
             nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             broadcastManager = LocalBroadcastManager.getInstance(this);
-            // Pivx
-            pivxApplication = PivxApplication.getInstance();
-            module = (PivxModuleImp) pivxApplication.getModule();
+            // N8V
+            n8VApplication = N8VApplication.getInstance();
+            module = (N8VModuleImp) n8VApplication.getModule();
             blockchainManager = module.getBlockchainManager();
             // connect to pivtrum node
-            /*pivtrumPeergroup = new PivtrumPeergroup(pivxApplication.getNetworkConf());
+            /*pivtrumPeergroup = new PivtrumPeergroup(n8VApplication.getNetworkConf());
             pivtrumPeergroup.addAddressListener(addressListener);
             module.setPivtrumPeergroup(pivtrumPeergroup);*/
 
@@ -335,9 +338,9 @@ public class PivxWalletService extends Service{
             peerConnectivityListener = new PeerConnectivityListener();
 
             File file = getDir("blockstore_v2",MODE_PRIVATE);
-            String filename = PivxContext.Files.BLOCKCHAIN_FILENAME;
+            String filename = N8VContext.Files.BLOCKCHAIN_FILENAME;
             boolean fileExists = new File(file,filename).exists();
-            blockchainStore = new SnappyBlockchainStore(PivxContext.CONTEXT,file,filename);
+            blockchainStore = new SnappyBlockchainStore(N8VContext.CONTEXT,file,filename);
             blockchainManager.init(
                     blockchainStore,
                     file,
@@ -376,7 +379,7 @@ public class PivxWalletService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        log.info("Pivx service onStartCommand");
+        log.info("N8V service onStartCommand");
         try {
             if (intent != null) {
                 try {
@@ -459,7 +462,7 @@ public class PivxWalletService extends Service{
             AlarmManager alarm = (AlarmManager)getSystemService(ALARM_SERVICE);
             long scheduleTime = System.currentTimeMillis() + 2000*60;//(1000 * 60 * 60); // One hour from now
 
-            Intent intent = new Intent(this, PivxWalletService.class);
+            Intent intent = new Intent(this, N8VWalletService.class);
             intent.setAction(ACTION_SCHEDULE_SERVICE);
             alarm.set(
                     // This alarm will wake up the device when System.currentTimeMillis()
@@ -481,34 +484,34 @@ public class PivxWalletService extends Service{
     }
 
     private void requestRateCoin(){
-        final AppConf appConf = pivxApplication.getAppConf();
-        PivxRate pivxRate = module.getRate(appConf.getSelectedRateCoin());
-        if (pivxRate == null || pivxRate.getTimestamp() + PivxContext.RATE_UPDATE_TIME < System.currentTimeMillis()){
+        final AppConf appConf = n8VApplication.getAppConf();
+        N8VRate n8VRate = module.getRate(appConf.getSelectedRateCoin());
+        if (n8VRate == null || n8VRate.getTimestamp() + N8VContext.RATE_UPDATE_TIME < System.currentTimeMillis()){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         CoinMarketCapApiClient c = new CoinMarketCapApiClient();
-                        CoinMarketCapApiClient.PivxMarket pivxMarket = c.getPivxPxrice();
-                        PivxRate pivxRate = new PivxRate("USD",pivxMarket.priceUsd,System.currentTimeMillis());
-                        module.saveRate(pivxRate);
-                        final PivxRate pivxBtcRate = new PivxRate("BTC",pivxMarket.priceBtc,System.currentTimeMillis());
-                        module.saveRate(pivxBtcRate);
+                        CoinMarketCapApiClient.N8VMarket n8VMarket = c.getN8VPrice();
+                        N8VRate n8VRate = new N8VRate("USD", n8VMarket.priceUsd,System.currentTimeMillis());
+                        module.saveRate(n8VRate);
+                        final N8VRate n8vBtcRate = new N8VRate("BTC", n8VMarket.priceBtc,System.currentTimeMillis());
+                        module.saveRate(n8vBtcRate);
 
                         // Get the rest of the rates:
-                        List<PivxRate> rates = new CoinMarketCapApiClient.BitPayApi().getRates(new CoinMarketCapApiClient.BitPayApi.RatesConvertor<PivxRate>() {
+                        List<N8VRate> rates = new CoinMarketCapApiClient.BitPayApi().getRates(new CoinMarketCapApiClient.BitPayApi.RatesConvertor<N8VRate>() {
                             @Override
-                            public PivxRate convertRate(String code, String name, BigDecimal bitcoinRate) {
-                                BigDecimal rate = bitcoinRate.multiply(pivxBtcRate.getRate());
-                                return new PivxRate(code,rate,System.currentTimeMillis());
+                            public N8VRate convertRate(String code, String name, BigDecimal bitcoinRate) {
+                                BigDecimal rate = bitcoinRate.multiply(n8vBtcRate.getRate());
+                                return new N8VRate(code,rate,System.currentTimeMillis());
                             }
                         });
 
-                        for (PivxRate rate : rates) {
+                        for (N8VRate rate : rates) {
                             module.saveRate(rate);
                         }
 
-                    } catch (RequestPivxRateException e) {
+                    } catch (RequestN8VRateException e) {
                         e.printStackTrace();
                     } catch (Exception e){
                         e.printStackTrace();
@@ -564,7 +567,7 @@ public class PivxWalletService extends Service{
             }
 
             if(showNotif) {
-                android.support.v4.app.NotificationCompat.Builder mBuilder =
+                @SuppressLint({"NewApi", "LocalSuppress"}) android.support.v4.app.NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(getApplicationContext())
                                 .setSmallIcon(R.mipmap.ic_launcher)
                                 .setContentTitle("Alert")
@@ -574,7 +577,7 @@ public class PivxWalletService extends Service{
                                         (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) ?
                                                 getResources().getColor(R.color.bgPurple,null)
                                                 :
-                                                ContextCompat.getColor(PivxWalletService.this,R.color.bgPurple))
+                                                ContextCompat.getColor(N8VWalletService.this,R.color.bgPurple))
                         ;
 
                 nm.notify(NOT_BLOCKCHAIN_ALERT, mBuilder.build());

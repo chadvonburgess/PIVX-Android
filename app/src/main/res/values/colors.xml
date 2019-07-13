@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="primaryColor">#6d4c41</color>
+
+    <color name="primaryLightColor">#9c786c</color>
+
+    <color name="primaryDarkColor">#40241a</color>
+
+    <color name="primaryTextColor">#ffffff</color>
+
     <color name="transparent">#00000000</color>
-    <color name="colorPrimary">#55476c</color>
-    <color name="colorPrimaryDark">#45385a</color>
-    <color name="colorAccent">#009688</color>
-    <color name="bgPurple">#55476c</color>
-    <color name="green">#009688</color>
-    <color name="lightGreen1">#36c6a5</color>
-    <color name="mainGreen">#63ece0</color>
-    <color name="sync_green">#B7FFF9</color>
-    <color name="lightGreen">#50e3c2</color>
-    <color name="colorPurple">#55476c</color>
+    <color name="colorPrimary">#6d4c41</color>
+    <color name="colorPrimaryDark">#40241a</color>
+    <color name="colorAccent">#9c786c</color>
+    <color name="bgPurple">#9c786c</color>
+    <color name="green">#fdbf08</color>
+    <color name="lightGreen1">#8b7126</color>
+    <color name="mainGreen">#eac455</color>
+    <color name="sync_green">#edaa4c</color>
+    <color name="lightGreen">#fcfdaa</color>
+    <color name="colorPurple">#9c786c</color>
     <color name="bgWhite">#ffffff</color>
     <color name="bgWhite30">#4Dffffff</color>
     <color name="bgBlack30">#4D000000</color>
@@ -41,7 +50,7 @@
 
     <!-- Tutorial -->
 
-    <color name="bg_screen1">#55476c</color>
+    <color name="bg_screen1">#6d4c41</color>
     <color name="bg_screen2">#73bdc5</color>
     <color name="bg_screen3">#ed8557</color>
 

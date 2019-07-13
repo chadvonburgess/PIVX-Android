@@ -13,8 +13,8 @@ import org.pivxj.core.InsufficientMoneyException;
 import org.pivxj.core.Transaction;
 
 import pivx.org.pivxwallet.R;
-import pivx.org.pivxwallet.module.PivxContext;
-import pivx.org.pivxwallet.service.PivxWalletService;
+import pivx.org.pivxwallet.module.N8VContext;
+import pivx.org.pivxwallet.service.N8VWalletService;
 import pivx.org.pivxwallet.ui.base.BaseDrawerActivity;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTextDialog;
 import pivx.org.pivxwallet.utils.DialogsUtil;
@@ -56,8 +56,8 @@ public class DonateActivity extends BaseDrawerActivity {
     private void send() {
         try {
             // create the tx
-            String addressStr = PivxContext.DONATE_ADDRESS;
-            if (!pivxModule.chechAddress(addressStr))
+            String addressStr = N8VContext.DONATE_ADDRESS;
+            if (!n8VModule.chechAddress(addressStr))
                 throw new IllegalArgumentException("Address not valid");
             String amountStr = edit_amount.getText().toString();
             if (amountStr.length() < 1) throw new IllegalArgumentException("Amount not valid");
@@ -68,14 +68,14 @@ public class DonateActivity extends BaseDrawerActivity {
             Coin amount = Coin.parseCoin(amountStr);
             if (amount.isZero()) throw new IllegalArgumentException("Amount zero, please correct it");
             if (amount.isLessThan(Transaction.MIN_NONDUST_OUTPUT)) throw new IllegalArgumentException("Amount must be greater than the minimum amount accepted from miners, "+Transaction.MIN_NONDUST_OUTPUT.toFriendlyString());
-            if (amount.isGreaterThan(Coin.valueOf(pivxModule.getAvailableBalance())))
+            if (amount.isGreaterThan(Coin.valueOf(n8VModule.getAvailableBalance())))
                 throw new IllegalArgumentException("Insuficient balance");
             String memo = "Donation!";
             // build a tx with the default fee
-            Transaction transaction = pivxModule.buildSendTx(addressStr, amount, memo,pivxModule.getReceiveAddress());
+            Transaction transaction = n8VModule.buildSendTx(addressStr, amount, memo, n8VModule.getReceiveAddress());
             // send it
-            pivxModule.commitTx(transaction);
-            Intent intent = new Intent(DonateActivity.this, PivxWalletService.class);
+            n8VModule.commitTx(transaction);
+            Intent intent = new Intent(DonateActivity.this, N8VWalletService.class);
             intent.setAction(ACTION_BROADCAST_TRANSACTION);
             intent.putExtra(DATA_TRANSACTION_HASH,transaction.getHash().getBytes());
             startService(intent);

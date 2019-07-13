@@ -20,11 +20,12 @@
         >
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="245dp"
             android:id="@+id/logoView"
-            android:src="@mipmap/img_login_logo"
+            android:src="@drawable/splash"
             android:paddingTop="40dp"
+            android:scaleType="centerInside"
             android:paddingBottom="20dp"
             android:layout_gravity="center"
            />

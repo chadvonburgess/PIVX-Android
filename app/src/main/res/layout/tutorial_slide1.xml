@@ -11,9 +11,9 @@
             android:id="@+id/tutorialImage"
             android:layout_alignParentTop = "true"
             android:layout_centerHorizontal = "true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/img_step_1" />
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@android:drawable/ic_lock_lock" />
 
         <LinearLayout
             android:layout_width="wrap_content"

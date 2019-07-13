@@ -14,10 +14,10 @@ import java.io.File;
  * Created by furszy on 6/4/17.
  */
 
-public class PivxContext {
+public class N8VContext {
 
     public static final boolean IS_TEST = false;
-    public static final NetworkParameters NETWORK_PARAMETERS = IS_TEST? TestNet3Params.get():MainNetParams.get();
+    public static final NetworkParameters NETWORK_PARAMETERS = MainNetParams.get();
     /** Pivxj global context. */
     public static final Context CONTEXT = new Context(NETWORK_PARAMETERS);
 
@@ -26,10 +26,13 @@ public class PivxContext {
 
     public static final String ENABLE_BIP44_APP_VERSION = "1.03";
 
-    /** Pivx wallet released time */
-    public static final long PIVX_WALLET_APP_RELEASED_ON_PLAY_STORE_TIME = 1500940800;
+    /** N8V wallet released time */
+    //not really sure how to update this
+    public static final long N8V_WALLET_APP_RELEASED_ON_PLAY_STORE_TIME = 1500940800;
 
     /** Currency exchange rate */
+    //doesn't contain our coin let
+    //todo update this
     public static final String URL_FIAT_CURRENCIES_RATE = "https://bitpay.com/rates";
 
     // report mail
@@ -38,7 +41,8 @@ public class PivxContext {
     public static final String REPORT_SUBJECT_ISSUE = "Reported issue";
 
     /** Donation address */
-    public static final String DONATE_ADDRESS = "DLwFC1qQbUzFZJg1vnvdAXBunRPh6anceK";
+    //todo replace with new one ?
+    public static final String DONATE_ADDRESS = ""; //"DLwFC1qQbUzFZJg1vnvdAXBunRPh6anceK";
 
     public static final class Files{
 
@@ -56,7 +60,7 @@ public class PivxContext {
         /** Path to external storage */
         public static final File EXTERNAL_STORAGE_DIR = Environment.getExternalStorageDirectory();
         /** Filename of the manual wallet backup. */
-        public static final String EXTERNAL_WALLET_BACKUP = "pivx-wallet-backup" +"_"+ FILENAME_NETWORK_SUFFIX;
+        public static final String EXTERNAL_WALLET_BACKUP = "n8v-wallet-backup" +"_"+ FILENAME_NETWORK_SUFFIX;
         /** Manual backups go here. */
         public static final File EXTERNAL_WALLET_BACKUP_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         public static final String getExternalWalletBackupFileName(String appName){

@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import pivx.org.pivxwallet.R;
-import global.PivxRate;
+import global.N8VRate;
 import pivx.org.pivxwallet.ui.base.BaseRecyclerFragment;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerAdapter;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerViewHolder;
@@ -39,7 +39,7 @@ public class TransactionsFragmentBase extends BaseRecyclerFragment<TransactionWr
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionsFragmentBase.class);
 
-    private PivxRate pivxRate;
+    private N8VRate n8VRate;
     private MonetaryFormat coinFormat = MonetaryFormat.BTC;
     private int scale = 3;
 
@@ -54,7 +54,7 @@ public class TransactionsFragmentBase extends BaseRecyclerFragment<TransactionWr
 
     @Override
     protected List<TransactionWrapper> onLoading() {
-        List<TransactionWrapper> list = pivxModule.listTx();
+        List<TransactionWrapper> list = n8VModule.listTx();
         Collections.sort(list, new Comparator<TransactionWrapper>(){
             public int compare(TransactionWrapper o1, TransactionWrapper o2){
                 if(o1.getTransaction().getUpdateTime().getTime() == o2.getTransaction().getUpdateTime().getTime())
@@ -91,11 +91,11 @@ public class TransactionsFragmentBase extends BaseRecyclerFragment<TransactionWr
                 }
 
                 String localCurrency = null;
-                if (pivxRate!=null) {
-                    localCurrency = pivxApplication.getCentralFormats().format(
-                                    new BigDecimal(data.getAmount().getValue() * pivxRate.getRate().doubleValue()).movePointLeft(8)
+                if (n8VRate !=null) {
+                    localCurrency = n8VApplication.getCentralFormats().format(
+                                    new BigDecimal(data.getAmount().getValue() * n8VRate.getRate().doubleValue()).movePointLeft(8)
                                     )
-                                    + " " + pivxRate.getCode();
+                                    + " " + n8VRate.getCode();
                     holder.amountLocal.setText(localCurrency);
                     holder.amountLocal.setVisibility(View.VISIBLE);
                 }else {
@@ -119,7 +119,7 @@ public class TransactionsFragmentBase extends BaseRecyclerFragment<TransactionWr
                     holder.imageView.setImageResource(R.drawable.ic_transaction_mining);
                     holder.amount.setTextColor(ContextCompat.getColor(context, R.color.green));
                 }
-                holder.title.setText(getAddressOrContact(pivxModule,data));
+                holder.title.setText(getAddressOrContact(n8VModule,data));
 
                 /*if (data.getOutputLabels()!=null && !data.getOutputLabels().isEmpty()){
                     AddressLabel contact = data.getOutputLabels().get(0);
@@ -129,10 +129,10 @@ public class TransactionsFragmentBase extends BaseRecyclerFragment<TransactionWr
                         else
                             holder.title.setText(contact.getAddresses().get(0));
                     }else {
-                        holder.title.setText(data.getTransaction().getOutput(0).getScriptPubKey().getToAddress(pivxModule.getConf().getNetworkParams()).toBase58());
+                        holder.title.setText(data.getTransaction().getOutput(0).getScriptPubKey().getToAddress(n8VModule.getConf().getNetworkParams()).toBase58());
                     }
                 }else {
-                    holder.title.setText(data.getTransaction().getOutput(0).getScriptPubKey().getToAddress(pivxModule.getConf().getNetworkParams()).toBase58());
+                    holder.title.setText(data.getTransaction().getOutput(0).getScriptPubKey().getToAddress(n8VModule.getConf().getNetworkParams()).toBase58());
                 }*/
                 String memo = data.getTransaction().getMemo();
                 holder.description.setText(memo!=null?memo:"No description");
@@ -160,7 +160,7 @@ public class TransactionsFragmentBase extends BaseRecyclerFragment<TransactionWr
     @Override
     public void onResume() {
         super.onResume();
-        pivxRate = pivxModule.getRate(pivxApplication.getAppConf().getSelectedRateCoin());
+        n8VRate = n8VModule.getRate(n8VApplication.getAppConf().getSelectedRateCoin());
     }
 
     /**

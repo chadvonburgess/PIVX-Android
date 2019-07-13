@@ -18,7 +18,7 @@ import org.pivxj.core.Coin;
 import java.math.BigDecimal;
 
 import pivx.org.pivxwallet.R;
-import global.PivxRate;
+import global.N8VRate;
 import pivx.org.pivxwallet.ui.base.BaseFragment;
 
 /**
@@ -33,7 +33,7 @@ public class AmountInputFragment extends BaseFragment implements View.OnClickLis
     private TextView txt_currency_amount, txtShowPiv,txt_local_currency;
     private ImageButton btnSwap;
     private ViewFlipper amountSwap;
-    private PivxRate pivxRate;
+    private N8VRate n8VRate;
     private boolean inPivs = true;
 
     @Nullable
@@ -55,10 +55,10 @@ public class AmountInputFragment extends BaseFragment implements View.OnClickLis
         btnSwap = (ImageButton) root.findViewById(R.id.btn_swap);
         btnSwap.setOnClickListener(this);
 
-        pivxRate = pivxModule.getRate(pivxApplication.getAppConf().getSelectedRateCoin());
+        n8VRate = n8VModule.getRate(n8VApplication.getAppConf().getSelectedRateCoin());
 
-        if (pivxRate != null)
-            txt_local_currency.setText("0 " + pivxRate.getCode());
+        if (n8VRate != null)
+            txt_local_currency.setText("0 " + n8VRate.getCode());
         else
             txt_local_currency.setText("0");
 
@@ -75,16 +75,16 @@ public class AmountInputFragment extends BaseFragment implements View.OnClickLis
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (pivxRate != null) {
+                if (n8VRate != null) {
                     if (s.length() > 0) {
                         String valueStr = s.toString();
                         if (valueStr.charAt(0) == '.') {
                             valueStr = "0" + valueStr;
                         }
-                        BigDecimal result = new BigDecimal(valueStr).divide(pivxRate.getRate(), 6, BigDecimal.ROUND_DOWN);
+                        BigDecimal result = new BigDecimal(valueStr).divide(n8VRate.getRate(), 6, BigDecimal.ROUND_DOWN);
                         txtShowPiv.setText(result.toPlainString() + " PIV");
                     } else {
-                        txtShowPiv.setText("0 " + pivxRate.getCode());
+                        txtShowPiv.setText("0 " + n8VRate.getCode());
                     }
                 }else {
                     txtShowPiv.setText(R.string.no_rate);
@@ -106,25 +106,25 @@ public class AmountInputFragment extends BaseFragment implements View.OnClickLis
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length()>0) {
-                    if (pivxRate != null) {
+                    if (n8VRate != null) {
                         String valueStr = s.toString();
                         if (valueStr.charAt(0) == '.') {
                             valueStr = "0" + valueStr;
                         }
                         Coin coin = Coin.parseCoin(valueStr);
                         txt_local_currency.setText(
-                                pivxApplication.getCentralFormats().format(
-                                        new BigDecimal(coin.getValue() * pivxRate.getRate().doubleValue()).movePointLeft(8)
+                                n8VApplication.getCentralFormats().format(
+                                        new BigDecimal(coin.getValue() * n8VRate.getRate().doubleValue()).movePointLeft(8)
                                 )
-                                        + " " + pivxRate.getCode()
+                                        + " " + n8VRate.getCode()
                         );
                     }else {
                         // rate null -> no connection.
                         txt_local_currency.setText(R.string.no_rate);
                     }
                 }else {
-                    if (pivxRate!=null)
-                        txt_local_currency.setText("0 "+pivxRate.getCode());
+                    if (n8VRate !=null)
+                        txt_local_currency.setText("0 "+ n8VRate.getCode());
                     else
                         txt_local_currency.setText(R.string.no_rate);
                 }

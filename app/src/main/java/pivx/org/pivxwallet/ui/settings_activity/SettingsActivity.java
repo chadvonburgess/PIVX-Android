@@ -1,13 +1,10 @@
 package pivx.org.pivxwallet.ui.settings_activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,11 +16,10 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import chain.BlockchainState;
-import global.PivxModuleImp;
+import global.N8VModuleImp;
 import pivx.org.pivxwallet.BuildConfig;
 import pivx.org.pivxwallet.R;
-import pivx.org.pivxwallet.module.PivxContext;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.ui.base.BaseDrawerActivity;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTwoButtonsDialog;
 import pivx.org.pivxwallet.ui.export_account.ExportKeyActivity;
@@ -41,10 +37,6 @@ import pivx.org.pivxwallet.utils.IntentsUtils;
 import pivx.org.pivxwallet.utils.NavigationUtils;
 import pivx.org.pivxwallet.utils.ReportIssueDialogBuilder;
 
-import static pivx.org.pivxwallet.service.IntentsConstants.INTENT_BROADCAST_DATA_BLOCKCHAIN_STATE;
-import static pivx.org.pivxwallet.service.IntentsConstants.INTENT_BROADCAST_DATA_PEER_CONNECTED;
-import static pivx.org.pivxwallet.service.IntentsConstants.INTENT_BROADCAST_DATA_TYPE;
-import static pivx.org.pivxwallet.service.IntentsConstants.INTENT_EXTRA_BLOCKCHAIN_STATE;
 import static pivx.org.pivxwallet.ui.tutorial_activity.TutorialActivity.INTENT_EXTRA_INFO_TUTORIAL;
 
 /**
@@ -106,7 +98,7 @@ public class SettingsActivity extends BaseDrawerActivity implements View.OnClick
         // rates
         findViewById(R.id.btn_rates).setOnClickListener(this);
         text_rates = (TextView) findViewById(R.id.text_rates);
-        text_rates.setText(pivxApplication.getAppConf().getSelectedRateCoin());
+        text_rates.setText(n8VApplication.getAppConf().getSelectedRateCoin());
 
         // Open Network Monitor
         buttonChange = (Button) findViewById(R.id.btn_network);
@@ -124,11 +116,11 @@ public class SettingsActivity extends BaseDrawerActivity implements View.OnClick
 
         // Video Switch
         videoSwitch = (Switch) findViewById(R.id.videoSwitch);
-        videoSwitch.setChecked(pivxApplication.getAppConf().isSplashSoundEnabled());
+        videoSwitch.setChecked(n8VApplication.getAppConf().isSplashSoundEnabled());
         videoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                pivxApplication.getAppConf().setSplashSound(checked);
+                n8VApplication.getAppConf().setSplashSound(checked);
             }
         });
     }
@@ -139,7 +131,7 @@ public class SettingsActivity extends BaseDrawerActivity implements View.OnClick
         // to check current activity in the navigation drawer
         setNavigationMenuItemChecked(2);
         updateNetworkStatus();
-        text_rates.setText(pivxApplication.getAppConf().getSelectedRateCoin());
+        text_rates.setText(n8VApplication.getAppConf().getSelectedRateCoin());
     }
 
     private void updateNetworkStatus() {
@@ -147,11 +139,11 @@ public class SettingsActivity extends BaseDrawerActivity implements View.OnClick
         if (!isOnForeground)return;
         txt_network_info.setText(
                 Html.fromHtml(
-                        "Network<br><font color=#55476c>"+pivxModule.getConf().getNetworkParams().getId()+
+                        "Network<br><font color=#55476c>"+ n8VModule.getConf().getNetworkParams().getId()+
                                 "</font><br>" +
-                                "Height<br><font color=#55476c>"+pivxModule.getChainHeight()+"</font><br>" +
+                                "Height<br><font color=#55476c>"+ n8VModule.getChainHeight()+"</font><br>" +
                                 "Protocol Version<br><font color=#55476c>"+
-                                pivxModule.getProtocolVersion()+"</font>"
+                                n8VModule.getProtocolVersion()+"</font>"
 
                 )
         );
@@ -205,7 +197,7 @@ public class SettingsActivity extends BaseDrawerActivity implements View.OnClick
                 new SimpleTwoButtonsDialog.SimpleTwoBtnsDialogListener() {
                     @Override
                     public void onRightBtnClicked(SimpleTwoButtonsDialog dialog) {
-                        pivxApplication.stopBlockchain();
+                        n8VApplication.stopBlockchain();
                         Toast.makeText(SettingsActivity.this,R.string.reseting_blockchain,Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                     }
@@ -231,14 +223,14 @@ public class SettingsActivity extends BaseDrawerActivity implements View.OnClick
             @Nullable
             @Override
             protected CharSequence subject() {
-                return PivxContext.REPORT_SUBJECT_ISSUE+" "+pivxApplication.getVersionName();
+                return N8VContext.REPORT_SUBJECT_ISSUE+" "+ n8VApplication.getVersionName();
             }
 
             @Nullable
             @Override
             protected CharSequence collectApplicationInfo() throws IOException {
                 final StringBuilder applicationInfo = new StringBuilder();
-                CrashReporter.appendApplicationInfo(applicationInfo, pivxApplication);
+                CrashReporter.appendApplicationInfo(applicationInfo, n8VApplication);
                 return applicationInfo;
             }
 
@@ -259,7 +251,7 @@ public class SettingsActivity extends BaseDrawerActivity implements View.OnClick
             @Nullable
             @Override
             protected CharSequence collectWalletDump() throws IOException {
-                return ((PivxModuleImp)pivxModule).getWallet().toString(false,true,true,null);
+                return ((N8VModuleImp) n8VModule).getWallet().toString(false,true,true,null);
             }
         };
         dialog.show();

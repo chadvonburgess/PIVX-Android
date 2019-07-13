@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 
 import global.AddressLabel;
-import global.PivxModule;
+import global.N8VModule;
 import global.wrappers.TransactionWrapper;
 
 /**
@@ -18,7 +18,7 @@ public class TxUtils {
 
     private static Logger logger = LoggerFactory.getLogger(TxUtils.class);
 
-    public static String getAddressOrContact(PivxModule pivxModule, TransactionWrapper data) {
+    public static String getAddressOrContact(N8VModule n8VModule, TransactionWrapper data) {
         String text;
         if (data.getOutputLabels()!=null && !data.getOutputLabels().isEmpty()){
             Collection<AddressLabel> addressLabels = data.getOutputLabels().values();
@@ -30,9 +30,9 @@ public class TxUtils {
                     text = addressLabel.getAddresses().get(0);
             }else {
                 try {
-                    text = data.getTransaction().getOutput(0).getScriptPubKey().getToAddress(pivxModule.getConf().getNetworkParams(), true).toBase58();
+                    text = data.getTransaction().getOutput(0).getScriptPubKey().getToAddress(n8VModule.getConf().getNetworkParams(), true).toBase58();
                 }catch (ScriptException e){
-                    text = data.getTransaction().getOutput(1).getScriptPubKey().getToAddress(pivxModule.getConf().getNetworkParams(),true).toBase58();
+                    text = data.getTransaction().getOutput(1).getScriptPubKey().getToAddress(n8VModule.getConf().getNetworkParams(),true).toBase58();
                 }
             }
         }else {

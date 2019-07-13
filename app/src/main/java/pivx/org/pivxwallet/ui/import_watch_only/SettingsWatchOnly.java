@@ -62,9 +62,9 @@ public class SettingsWatchOnly extends BaseActivity {
         boolean isBip32 = check_bip32.isChecked();
         if (xpub.length()>0){
             try {
-                pivxModule.watchOnlyMode(
+                n8VModule.watchOnlyMode(
                         xpub,
-                        isBip32 ? DeterministicKeyChain.KeyChainType.BIP32: DeterministicKeyChain.KeyChainType.BIP44_PIVX_ONLY
+                        isBip32 ? DeterministicKeyChain.KeyChainType.BIP32: DeterministicKeyChain.KeyChainType.BIP44_N8V
                 );
                 SimpleTextDialog simpleTextDialog = DialogsUtil.buildSimpleTextDialog(
                         this,

@@ -109,9 +109,9 @@ public class RequestActivity extends BaseActivity implements View.OnClickListene
         // memo
         String memo = edit_memo.getText().toString();
 
-        addressStr = pivxModule.getFreshNewAddress().toBase58();
+        addressStr = n8VModule.getFreshNewAddress().toBase58();
 
-        NetworkParameters params = pivxModule.getConf().getNetworkParams();
+        NetworkParameters params = n8VModule.getConf().getNetworkParams();
 
         String pivxURI = PivxURI.convertToBitcoinURI(
                 params,

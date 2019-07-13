@@ -65,7 +65,7 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
             @Override
             public void afterTextChanged(Editable s) {
                 String temp = s.toString();
-                if(pivxModule.chechAddress(temp)){
+                if(n8VModule.chechAddress(temp)){
                     address = temp;
                     edit_address.setTextColor(Color.parseColor("#55476c"));;
                 }else {
@@ -93,13 +93,13 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
                 if (address!=null) {
                     if (name.length() > 0 && address.length() > 0) {
                         try {
-                            if (!pivxModule.chechAddress(address)) {
+                            if (!n8VModule.chechAddress(address)) {
                                 Toast.makeText(this, R.string.invalid_input_address, Toast.LENGTH_LONG).show();
                                 return true;
                             }
                             AddressLabel addressLabel = new AddressLabel(name);
                             addressLabel.addAddress(address);
-                            pivxModule.saveContact(addressLabel);
+                            n8VModule.saveContact(addressLabel);
                             Toast.makeText(this, "AddressLabel saved", Toast.LENGTH_LONG).show();
                             onBackPressed();
                         } catch (ContactAlreadyExistException e) {
@@ -142,7 +142,7 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
                 try {
                     String address = data.getStringExtra(INTENT_EXTRA_RESULT);
                     String usedAddress;
-                    if (pivxModule.chechAddress(address)){
+                    if (n8VModule.chechAddress(address)){
                         usedAddress = address;
                     }else {
                         PivxURI pivxUri = new PivxURI(address);

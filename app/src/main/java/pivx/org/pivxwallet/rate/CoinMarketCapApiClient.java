@@ -28,7 +28,7 @@ public class CoinMarketCapApiClient {
 
     private static final String URL = "https://api.coinmarketcap.com/v1/";
 
-    public class PivxMarket{
+    public class N8VMarket {
 
         public BigDecimal priceUsd;
         public BigDecimal priceBtc;
@@ -36,7 +36,7 @@ public class CoinMarketCapApiClient {
         public BigDecimal totalSupply;
         public int rank;
 
-        public PivxMarket(BigDecimal priceUsd, BigDecimal priceBtc, BigDecimal marketCapUsd, BigDecimal totalSupply, int rank) {
+        public N8VMarket(BigDecimal priceUsd, BigDecimal priceBtc, BigDecimal marketCapUsd, BigDecimal totalSupply, int rank) {
             this.priceUsd = priceUsd;
             this.priceBtc = priceBtc;
             this.marketCapUsd = marketCapUsd;
@@ -45,10 +45,10 @@ public class CoinMarketCapApiClient {
         }
     }
 
-    public PivxMarket getPivxPxrice() throws RequestPivxRateException{
+    public N8VMarket getN8VPrice() throws RequestN8VRateException {
         try {
-            PivxMarket pivxMarket = null;
-            String url = this.URL + "ticker/pivx/";
+            N8VMarket n8VMarket = null;
+            String url = this.URL + "ticker/native-coin/";
             HttpResponse httpResponse = get(url);
             // receive response as inputStream
             InputStream inputStream = httpResponse.getEntity().getContent();
@@ -58,7 +58,7 @@ public class CoinMarketCapApiClient {
             if (httpResponse.getStatusLine().getStatusCode()==200){
                 JSONArray jsonArray = new JSONArray(result);
                 JSONObject jsonObject = jsonArray.getJSONObject(0);
-                pivxMarket = new PivxMarket(
+                n8VMarket = new N8VMarket(
                         new BigDecimal(jsonObject.getString("price_usd")),
                         new BigDecimal(jsonObject.getString("price_btc")),
                         new BigDecimal(jsonObject.getString("market_cap_usd")),
@@ -66,16 +66,16 @@ public class CoinMarketCapApiClient {
                         jsonObject.getInt("rank")
                 );
             }
-            return pivxMarket;
+            return n8VMarket;
         } catch (ClientProtocolException e) {
             e.printStackTrace();
-            throw new RequestPivxRateException(e);
+            throw new RequestN8VRateException(e);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RequestPivxRateException(e);
+            throw new RequestN8VRateException(e);
         } catch (JSONException e) {
             e.printStackTrace();
-            throw new RequestPivxRateException(e);
+            throw new RequestN8VRateException(e);
         }
     }
 
@@ -114,9 +114,9 @@ public class CoinMarketCapApiClient {
         /**
          * {"code":"BTC","name":"Bitcoin","rate":1}
          * @return
-         * @throws RequestPivxRateException
+         * @throws RequestN8VRateException
          */
-        public <T> List<T> getRates(RatesConvertor<T> ratesConvertor) throws RequestPivxRateException{
+        public <T> List<T> getRates(RatesConvertor<T> ratesConvertor) throws RequestN8VRateException {
             try {
                 HttpResponse httpResponse = get(URL);
                 // receive response as inputStream
@@ -138,13 +138,13 @@ public class CoinMarketCapApiClient {
                 return ret;
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
-                throw new RequestPivxRateException(e);
+                throw new RequestN8VRateException(e);
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new RequestPivxRateException(e);
+                throw new RequestN8VRateException(e);
             } catch (JSONException e) {
                 e.printStackTrace();
-                throw new RequestPivxRateException(e);
+                throw new RequestN8VRateException(e);
             }
         }
 

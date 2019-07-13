@@ -96,7 +96,7 @@
     <string name="currency_message">Selecteer een lokale munteenheid \n naar jou keuze</string>
     <string name="title_fee">Kost</string>
     <string name="title_currency">Lokale Munteenheid</string>
-    <string name="title_pivx_send">Hoeveelheid verzonden</string>
+    <string name="title_n8v_send">Hoeveelheid verzonden</string>
     <string name="empty_message_address">Je hebt nog geen adressen opgeslaan</string>
     <string name="error_message">Er is mogelijk een fout \n met je transactie</string>
     <string name="settings_change_trusted_node">Wijzig trusted node</string>

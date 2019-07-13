@@ -96,7 +96,7 @@
     <string name="currency_message">Valitse mieleisesi paikallinen valuutta</string>
     <string name="title_fee">Taksa</string>
     <string name="title_currency">Paikallinen Valuutta</string>
-    <string name="title_pivx_send">Lähetysmäärä</string>
+    <string name="title_n8v_send">Lähetysmäärä</string>
     <string name="empty_message_address">Sinulla ei ole vielä yhtään tallennettua osoitetta.</string>
     <string name="error_message">Näyttää siltä että rahansiirrossasi on virhe</string>
     <string name="settings_change_trusted_node">Vaihda luotettu solmu</string>

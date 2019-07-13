@@ -30,7 +30,7 @@ import java.util.List;
 import chain.BlockchainState;
 import pivx.org.pivxwallet.R;
 import global.exceptions.NoPeerConnectedException;
-import global.PivxRate;
+import global.N8VRate;
 import pivx.org.pivxwallet.ui.base.BaseDrawerActivity;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTextDialog;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTwoButtonsDialog;
@@ -69,7 +69,7 @@ public class WalletActivity extends BaseDrawerActivity {
     private TextView txt_watch_only;
     private View view_background;
     private View container_syncing;
-    private PivxRate pivxRate;
+    private N8VRate pivxRate;
     private TransactionsFragmentBase txsFragment;
 
     // Receiver
@@ -122,7 +122,7 @@ public class WalletActivity extends BaseDrawerActivity {
         root.findViewById(R.id.fab_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pivxModule.isWalletWatchOnly()){
+                if (n8VModule.isWalletWatchOnly()){
                     Toast.makeText(v.getContext(),R.string.error_watch_only_mode,Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -168,8 +168,8 @@ public class WalletActivity extends BaseDrawerActivity {
 
         // check if this wallet need an update:
         try {
-            if(pivxModule.isBip32Wallet() && pivxModule.isSyncWithNode()){
-                if (!pivxModule.isWalletWatchOnly() && pivxModule.getAvailableBalanceCoin().isGreaterThan(Transaction.DEFAULT_TX_FEE)) {
+            if(n8VModule.isBip32Wallet() && n8VModule.isSyncWithNode()){
+                if (!n8VModule.isWalletWatchOnly() && n8VModule.getAvailableBalanceCoin().isGreaterThan(Transaction.DEFAULT_TX_FEE)) {
                     Intent intent = UpgradeWalletActivity.createStartIntent(
                             this,
                             getString(R.string.upgrade_wallet),
@@ -192,17 +192,17 @@ public class WalletActivity extends BaseDrawerActivity {
     }
 
     private void updateState() {
-        txt_watch_only.setVisibility(pivxModule.isWalletWatchOnly()?View.VISIBLE:View.GONE);
+        txt_watch_only.setVisibility(n8VModule.isWalletWatchOnly()?View.VISIBLE:View.GONE);
     }
 
     private void init() {
         // Start service if it's not started.
-        pivxApplication.startPivxService();
+        n8VApplication.startPivxService();
 
-        if (!pivxApplication.getAppConf().hasBackup()){
+        if (!n8VApplication.getAppConf().hasBackup()){
             long now = System.currentTimeMillis();
-            if (pivxApplication.getLastTimeRequestedBackup()+1800000L<now) {
-                pivxApplication.setLastTimeBackupRequested(now);
+            if (n8VApplication.getLastTimeRequestedBackup()+1800000L<now) {
+                n8VApplication.setLastTimeBackupRequested(now);
                 SimpleTwoButtonsDialog reminderDialog = DialogsUtil.buildSimpleTwoBtnsDialog(
                         this,
                         getString(R.string.reminder_backup),
@@ -292,7 +292,7 @@ public class WalletActivity extends BaseDrawerActivity {
                 try {
                     String address = data.getStringExtra(INTENT_EXTRA_RESULT);
                     final String usedAddress;
-                    if (pivxModule.chechAddress(address)){
+                    if (n8VModule.chechAddress(address)){
                         usedAddress = address;
                     }else {
                         PivxURI pivxUri = new PivxURI(address);
@@ -347,15 +347,15 @@ public class WalletActivity extends BaseDrawerActivity {
 
 
     private void updateBalance() {
-        Coin availableBalance = pivxModule.getAvailableBalanceCoin();
-        txt_value.setText(!availableBalance.isZero()?availableBalance.toFriendlyString():"0 Pivs");
-        Coin unnavailableBalance = pivxModule.getUnnavailableBalanceCoin();
-        txt_unnavailable.setText(!unnavailableBalance.isZero()?unnavailableBalance.toFriendlyString():"0 Pivs");
+        Coin availableBalance = n8VModule.getAvailableBalanceCoin();
+        txt_value.setText(!availableBalance.isZero()?availableBalance.toFriendlyString():"0 N8Vs");
+        Coin unnavailableBalance = n8VModule.getUnnavailableBalanceCoin();
+        txt_unnavailable.setText(!unnavailableBalance.isZero()?unnavailableBalance.toFriendlyString():"0 N8Vs");
         if (pivxRate == null)
-            pivxRate = pivxModule.getRate(pivxApplication.getAppConf().getSelectedRateCoin());
+            pivxRate = n8VModule.getRate(n8VApplication.getAppConf().getSelectedRateCoin());
         if (pivxRate!=null) {
             txt_local_currency.setText(
-                    pivxApplication.getCentralFormats().format(
+                    n8VApplication.getCentralFormats().format(
                             new BigDecimal(availableBalance.getValue() * pivxRate.getRate().doubleValue()).movePointLeft(8)
                     )
                     + " "+pivxRate.getCode()

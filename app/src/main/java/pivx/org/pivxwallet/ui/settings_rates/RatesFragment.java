@@ -11,7 +11,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import pivx.org.pivxwallet.R;
-import global.PivxRate;
+import global.N8VRate;
 import pivx.org.pivxwallet.ui.base.BaseRecyclerFragment;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerAdapter;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerViewHolder;
@@ -21,7 +21,7 @@ import pivx.org.pivxwallet.ui.base.tools.adapter.ListItemListeners;
  * Created by furszy on 7/2/17.
  */
 
-public class RatesFragment extends BaseRecyclerFragment<PivxRate> implements ListItemListeners<PivxRate> {
+public class RatesFragment extends BaseRecyclerFragment<N8VRate> implements ListItemListeners<N8VRate> {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,13 +32,13 @@ public class RatesFragment extends BaseRecyclerFragment<PivxRate> implements Lis
     }
 
     @Override
-    protected List<PivxRate> onLoading() {
-        return pivxModule.listRates();
+    protected List<N8VRate> onLoading() {
+        return n8VModule.listRates();
     }
 
     @Override
-    protected BaseRecyclerAdapter<PivxRate, ? extends PivxRateHolder> initAdapter() {
-        BaseRecyclerAdapter<PivxRate, PivxRateHolder> adapter = new BaseRecyclerAdapter<PivxRate, PivxRateHolder>(getActivity()) {
+    protected BaseRecyclerAdapter<N8VRate, ? extends PivxRateHolder> initAdapter() {
+        BaseRecyclerAdapter<N8VRate, PivxRateHolder> adapter = new BaseRecyclerAdapter<N8VRate, PivxRateHolder>(getActivity()) {
             @Override
             protected PivxRateHolder createHolder(View itemView, int type) {
                 return new PivxRateHolder(itemView,type);
@@ -50,7 +50,7 @@ public class RatesFragment extends BaseRecyclerFragment<PivxRate> implements Lis
             }
 
             @Override
-            protected void bindHolder(PivxRateHolder holder, PivxRate data, int position) {
+            protected void bindHolder(PivxRateHolder holder, N8VRate data, int position) {
                 holder.txt_name.setText(data.getCode());
                 if (list.get(0).getCode().equals(data.getCode()))
                     holder.view_line.setVisibility(View.GONE);
@@ -61,14 +61,14 @@ public class RatesFragment extends BaseRecyclerFragment<PivxRate> implements Lis
     }
 
     @Override
-    public void onItemClickListener(PivxRate data, int position) {
-        pivxApplication.getAppConf().setSelectedRateCoin(data.getCode());
+    public void onItemClickListener(N8VRate data, int position) {
+        n8VApplication.getAppConf().setSelectedRateCoin(data.getCode());
         Toast.makeText(getActivity(),R.string.rate_selected,Toast.LENGTH_SHORT).show();
         getActivity().onBackPressed();
     }
 
     @Override
-    public void onLongItemClickListener(PivxRate data, int position) {
+    public void onLongItemClickListener(N8VRate data, int position) {
 
     }
 
