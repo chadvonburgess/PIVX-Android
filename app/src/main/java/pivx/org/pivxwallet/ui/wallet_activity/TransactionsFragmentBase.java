@@ -18,8 +18,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import pivx.org.pivxwallet.R;
 import global.N8VRate;
+import pivx.org.pivxwallet.R;
 import pivx.org.pivxwallet.ui.base.BaseRecyclerFragment;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerAdapter;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerViewHolder;
@@ -109,9 +109,6 @@ public class TransactionsFragmentBase extends BaseRecyclerFragment<TransactionWr
                     //holder.cv.setBackgroundColor(Color.RED);Color.GREEN
                     holder.imageView.setImageResource(R.mipmap.ic_transaction_send);
                     holder.amount.setTextColor(ContextCompat.getColor(context, R.color.red));
-                }else if (data.isZcSpend()) {
-                    holder.imageView.setImageResource(R.drawable.ic_transaction_incognito);
-                    holder.amount.setTextColor(ContextCompat.getColor(context, R.color.green));
                 } else if (!data.isStake()){
                     holder.imageView.setImageResource(R.mipmap.ic_transaction_receive);
                     holder.amount.setTextColor(ContextCompat.getColor(context, R.color.green));

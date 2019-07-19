@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chain.BlockchainState;
+import global.N8VRate;
 import pivx.org.pivxwallet.R;
 import global.exceptions.NoPeerConnectedException;
-import global.N8VRate;
 import pivx.org.pivxwallet.ui.base.BaseDrawerActivity;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTextDialog;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTwoButtonsDialog;

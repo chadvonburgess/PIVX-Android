@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import global.PivtrumGlobalData;
 import pivtrum.PivtrumPeerData;
 import pivx.org.pivxwallet.R;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.ui.base.BaseActivity;
 import pivx.org.pivxwallet.ui.pincode_activity.PincodeActivity;
 import pivx.org.pivxwallet.ui.wallet_activity.WalletActivity;
@@ -41,7 +42,7 @@ public class StartNodeActivity extends BaseActivity {
     private ArrayAdapter<String> adapter;
     private List<String> hosts = new ArrayList<>();
 
-    private static final List<PivtrumPeerData> trustedNodes = PivtrumGlobalData.listTrustedHosts();
+    private static final List<PivtrumPeerData> trustedNodes = PivtrumGlobalData.listTrustedHosts(N8VContext.NETWORK_PARAMETERS, N8VContext.NETWORK_PARAMETERS.getPort());
 
     @Override
     protected void onCreateView(Bundle savedInstanceState, ViewGroup container) {

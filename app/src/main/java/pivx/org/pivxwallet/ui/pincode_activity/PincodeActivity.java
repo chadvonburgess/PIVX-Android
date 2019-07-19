@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.pivxj.params.MainNetParams;
+
 import java.util.List;
 import java.util.Random;
 
 import global.PivtrumGlobalData;
 import pivtrum.PivtrumPeerData;
 import pivx.org.pivxwallet.R;
+import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.ui.backup_mnemonic_activity.MnemonicActivity;
 import pivx.org.pivxwallet.ui.base.BaseActivity;
 import pivx.org.pivxwallet.ui.settings_pincode_activity.KeyboardFragment;
@@ -66,7 +69,7 @@ public class PincodeActivity extends BaseActivity implements KeyboardFragment.on
     private void goNext() {
         if (n8VApplication.getAppConf().getTrustedNode()==null){
             // select random trusted node
-            List<PivtrumPeerData> nodes = PivtrumGlobalData.listTrustedHosts();
+            List<PivtrumPeerData> nodes = PivtrumGlobalData.listTrustedHosts(N8VContext.NETWORK_PARAMETERS, N8VContext.NETWORK_PARAMETERS.getPort());
             Random random = new Random();
             n8VApplication.setTrustedServer(nodes.get(random.nextInt(nodes.size())));
             n8VApplication.stopBlockchain();

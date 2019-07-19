@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import pivx.org.pivxwallet.R;
 import global.N8VRate;
+import pivx.org.pivxwallet.R;
 import pivx.org.pivxwallet.ui.base.BaseRecyclerFragment;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerAdapter;
 import pivx.org.pivxwallet.ui.base.tools.adapter.BaseRecyclerViewHolder;

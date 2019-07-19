@@ -33,6 +33,7 @@ import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
 import global.ContextWrapper;
 import global.N8VModule;
+import global.N8VModuleImp;
 import global.WalletConfiguration;
 import global.utils.Io;
 import pivtrum.NetworkConf;
@@ -40,7 +41,6 @@ import pivtrum.PivtrumPeerData;
 import pivx.org.pivxwallet.contacts.ContactsStore;
 import pivx.org.pivxwallet.module.N8VContext;
 import pivx.org.pivxwallet.module.wallet.WalletBackupHelper;
-import global.N8VModuleImp;
 import pivx.org.pivxwallet.module.WalletConfImp;
 import pivx.org.pivxwallet.rate.db.RateDb;
 import pivx.org.pivxwallet.service.N8VWalletService;
@@ -248,12 +248,16 @@ public class N8VApplication extends Application implements ContextWrapper {
         startService(intent);
     }
 
+    @Override
+    public int getCurrentVersionNumber() {
+        return 1;
+    }
+
     public NetworkConf getNetworkConf() {
         return networkConf;
     }
 
     /**
-     *
      * @param trustedServer
      */
     public void setTrustedServer(PivtrumPeerData trustedServer) {

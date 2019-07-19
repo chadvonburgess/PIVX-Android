@@ -9,9 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
+import global.N8VModule;
 import pivx.org.pivxwallet.N8VApplication;
 import pivx.org.pivxwallet.R;
-import global.N8VModule;
 import pivx.org.pivxwallet.ui.base.dialogs.SimpleTextDialog;
 import pivx.org.pivxwallet.utils.DialogsUtil;
 

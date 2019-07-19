@@ -64,7 +64,7 @@ public class SettingsWatchOnly extends BaseActivity {
             try {
                 n8VModule.watchOnlyMode(
                         xpub,
-                        isBip32 ? DeterministicKeyChain.KeyChainType.BIP32: DeterministicKeyChain.KeyChainType.BIP44_N8V
+                        !isBip32 ? DeterministicKeyChain.KeyChainType.BIP44_N8V: DeterministicKeyChain.KeyChainType.BIP32
                 );
                 SimpleTextDialog simpleTextDialog = DialogsUtil.buildSimpleTextDialog(
                         this,
